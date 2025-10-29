@@ -18,22 +18,25 @@
         }
         
         :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0fccce;
-            --accent-dark: #0db9bb;
-            --text-primary: #ffffff;
-            --text-secondary: #b8b8b8;
-            --border: #2a2a4a;
-            --card-bg: #22223d;
-            --online: #00ff95;
-            --offline: #ff4757;
-            --sent-bubble: #0fccce;
-            --received-bubble: #2d2d4d;
+            --primary: #8A2BE2;
+            --primary-dark: #7B1FA2;
+            --secondary: #6A1B9A;
+            --accent: #FF4081;
+            --accent-dark: #E91E63;
+            --text-primary: #FFFFFF;
+            --text-secondary: #E0E0E0;
+            --border: #4A148C;
+            --card-bg: #4A148C;
+            --online: #00E676;
+            --offline: #FF5252;
+            --sent-bubble: #7C4DFF;
+            --received-bubble: #4A148C;
+            --input-bg: #311B92;
+            --success: #00C853;
         }
         
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #8A2BE2 0%, #6A1B9A 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -47,12 +50,12 @@
             max-width: 400px;
             height: 90vh;
             background: var(--secondary);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border);
         }
         
@@ -63,7 +66,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #0fccce 100%);
+            background: linear-gradient(135deg, #8A2BE2 0%, #6A1B9A 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -79,35 +82,43 @@
         }
         
         .splash-logo {
-            font-size: 60px;
+            font-size: 70px;
             margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
+            animation: bounce 1.5s infinite;
+            background: linear-gradient(45deg, #FF4081, #7C4DFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         
         .splash-text {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 36px;
+            font-weight: 800;
             margin-bottom: 10px;
+            background: linear-gradient(45deg, #FFFFFF, #E0E0E0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .splash-subtext {
             font-size: 16px;
             opacity: 0.9;
+            color: var(--text-secondary);
         }
         
         /* Header */
         .header {
             background: var(--primary);
-            padding: 16px 20px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .logo {
@@ -117,13 +128,16 @@
         }
         
         .logo i {
-            font-size: 24px;
+            font-size: 28px;
             color: var(--accent);
         }
         
         .logo h1 {
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #FFFFFF, #FF4081);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .user-info {
@@ -133,8 +147,8 @@
         }
         
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: var(--card-bg);
             display: flex;
@@ -145,7 +159,8 @@
             background-size: cover;
             background-position: center;
             border: 2px solid var(--accent);
-            font-size: 18px;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         
         /* Content Area */
@@ -154,36 +169,64 @@
             overflow-y: auto;
             padding: 0;
             background: var(--secondary);
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--border);
+        }
+        
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .content::-webkit-scrollbar-track {
+            background: var(--border);
+        }
+        
+        .content::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
         }
         
         /* Screens */
-        .login-screen, .users-screen, .chat-screen, .requests-screen, .profile-screen, .register-screen, .edit-profile-screen {
+        .login-screen, .users-screen, .chat-screen, .requests-screen, .profile-screen, .register-screen {
             height: 100%;
             display: flex;
             flex-direction: column;
         }
         
         .login-screen, .register-screen {
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
+            justify-content: flex-start;
+            padding: 40px 30px 30px;
             text-align: center;
+            overflow-y: auto;
         }
         
         .login-screen h2, .register-screen h2 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: var(--text-primary);
-            font-weight: 700;
-            font-size: 28px;
+            font-weight: 800;
+            font-size: 32px;
+            background: linear-gradient(45deg, #FFFFFF, #FF4081);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .login-screen p, .register-screen p {
             margin-bottom: 30px;
             color: var(--text-secondary);
             line-height: 1.5;
+            font-size: 16px;
         }
         
         /* Forms */
+        .form-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+        
         .form-group {
             width: 100%;
             margin-bottom: 20px;
@@ -192,98 +235,109 @@
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--text-primary);
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .form-control {
             width: 100%;
-            padding: 16px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 15px;
             font-size: 16px;
             transition: all 0.3s;
-            background: var(--card-bg);
+            background: var(--input-bg);
             color: var(--text-primary);
         }
         
         .form-control:focus {
             border-color: var(--accent);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.2);
         }
         
         .gender-selection {
             display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         
         .gender-option {
             flex: 1;
             text-align: center;
-            padding: 16px;
+            padding: 18px 10px;
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s;
-            background: var(--card-bg);
+            background: var(--input-bg);
         }
         
         .gender-option.selected {
             border-color: var(--accent);
-            background: rgba(15, 204, 206, 0.1);
+            background: rgba(255, 64, 129, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .gender-option i {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            margin-bottom: 10px;
             display: block;
             color: var(--accent);
         }
         
+        .gender-option div {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
         /* Buttons */
         .btn {
-            background: var(--accent);
+            background: linear-gradient(45deg, var(--accent), var(--accent-dark));
             color: white;
             border: none;
-            padding: 16px 28px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 18px 30px;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             transition: all 0.3s;
             width: 100%;
             justify-content: center;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
         }
         
         .btn:hover {
-            background: var(--accent-dark);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.4);
         }
         
         .btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
         
         .btn-outline {
             background: transparent;
             color: var(--accent);
             border: 2px solid var(--accent);
+            box-shadow: none;
         }
         
         .btn-outline:hover {
-            background: rgba(15, 204, 206, 0.1);
+            background: rgba(255, 64, 129, 0.1);
+            transform: translateY(-3px);
         }
         
         .divider {
             display: flex;
             align-items: center;
-            margin: 24px 0;
+            margin: 30px 0;
             color: var(--text-secondary);
             font-weight: 500;
         }
@@ -292,11 +346,50 @@
             content: '';
             flex: 1;
             height: 1px;
-            background-color: var(--border);
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
         
         .divider span {
-            padding: 0 16px;
+            padding: 0 20px;
+        }
+        
+        /* Avatar Selector */
+        .avatar-selector-container {
+            margin-bottom: 25px;
+        }
+        
+        .avatar-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: var(--input-bg);
+            border-radius: 15px;
+            border: 2px solid var(--border);
+        }
+        
+        .avatar-option {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            background: var(--card-bg);
+        }
+        
+        .avatar-option.selected {
+            border-color: var(--accent);
+            background: rgba(255, 64, 129, 0.1);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* User Lists */
@@ -306,18 +399,25 @@
         }
         
         .section-title {
-            padding: 16px 20px;
-            font-size: 18px;
-            font-weight: 700;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 800;
             color: var(--text-primary);
             background: var(--primary);
             border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--accent);
         }
         
         .user-item, .request-item {
             display: flex;
             align-items: center;
-            padding: 16px 20px;
+            padding: 18px 20px;
             background: var(--card-bg);
             margin-bottom: 1px;
             cursor: pointer;
@@ -326,13 +426,14 @@
         }
         
         .user-item:hover, .request-item:hover {
-            background: #2a2a4a;
+            background: #5D1F93;
             border-left-color: var(--accent);
+            transform: translateX(5px);
         }
         
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background: var(--primary);
             display: flex;
@@ -340,20 +441,21 @@
             align-items: center;
             color: white;
             font-weight: bold;
-            margin-right: 16px;
+            margin-right: 18px;
             position: relative;
             background-size: cover;
             background-position: center;
-            font-size: 20px;
+            font-size: 22px;
             border: 2px solid var(--border);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .status-indicator {
             position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 12px;
-            height: 12px;
+            bottom: 3px;
+            right: 3px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             border: 2px solid var(--card-bg);
         }
@@ -371,13 +473,14 @@
         }
         
         .user-name {
-            font-weight: 600;
-            margin-bottom: 4px;
+            font-weight: 700;
+            margin-bottom: 6px;
             color: var(--text-primary);
+            font-size: 17px;
         }
         
         .user-status {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-secondary);
         }
         
@@ -385,39 +488,40 @@
         .chat-header {
             display: flex;
             align-items: center;
-            padding: 16px 20px;
+            padding: 18px 20px;
             background: var(--primary);
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .back-btn {
             background: none;
             border: none;
-            font-size: 20px;
-            margin-right: 16px;
+            font-size: 22px;
+            margin-right: 18px;
             cursor: pointer;
             color: var(--accent);
-            padding: 8px;
+            padding: 10px;
             border-radius: 50%;
             transition: background 0.2s;
         }
         
         .back-btn:hover {
-            background: var(--card-bg);
+            background: rgba(255, 64, 129, 0.1);
         }
         
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 20px;
             background: var(--secondary);
         }
         
         .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            margin-bottom: 16px;
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            margin-bottom: 18px;
             position: relative;
             word-wrap: break-word;
             animation: fadeIn 0.3s ease;
@@ -430,37 +534,40 @@
         
         .received {
             background: var(--received-bubble);
-            border-bottom-left-radius: 5px;
+            border-bottom-left-radius: 8px;
             align-self: flex-start;
             border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .sent {
-            background: var(--sent-bubble);
+            background: linear-gradient(45deg, var(--sent-bubble), var(--primary));
             color: white;
-            border-bottom-right-radius: 5px;
+            border-bottom-right-radius: 8px;
             align-self: flex-end;
             margin-left: auto;
+            box-shadow: 0 2px 12px rgba(124, 77, 255, 0.3);
         }
         
         .message-info {
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
-            margin-top: 6px;
+            font-size: 12px;
+            margin-top: 8px;
             opacity: 0.8;
         }
         
         .message-image {
             max-width: 100%;
-            border-radius: 12px;
-            margin-top: 6px;
+            border-radius: 15px;
+            margin-top: 8px;
             cursor: pointer;
             border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .chat-input-container {
-            padding: 16px;
+            padding: 20px;
             background: var(--primary);
             border-top: 1px solid var(--border);
         }
@@ -468,44 +575,54 @@
         .message-limit {
             text-align: center;
             color: var(--text-secondary);
-            font-size: 12px;
-            margin-bottom: 8px;
-            padding: 8px;
-            background: rgba(255, 71, 87, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 71, 87, 0.3);
+            font-size: 13px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255, 82, 82, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 82, 82, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .message-limit.active {
-            background: rgba(0, 255, 149, 0.1);
-            border: 1px solid rgba(0, 255, 149, 0.3);
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0, 230, 118, 0.3);
         }
         
         .chat-input {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             align-items: flex-end;
         }
         
         .input-group {
             flex: 1;
             display: flex;
-            background: var(--card-bg);
+            background: var(--input-bg);
             border-radius: 25px;
-            padding: 8px 16px;
+            padding: 10px 20px;
             align-items: center;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+        
+        .input-group:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.2);
         }
         
         .message-input {
             flex: 1;
             border: none;
             background: none;
-            padding: 10px 0;
+            padding: 12px 0;
             outline: none;
             font-size: 16px;
             resize: none;
-            max-height: 100px;
+            max-height: 120px;
             color: var(--text-primary);
         }
         
@@ -517,40 +634,43 @@
         .icon-btn {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 22px;
             color: var(--accent);
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             border-radius: 50%;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         
         .icon-btn:hover {
-            background: rgba(15, 204, 206, 0.1);
+            background: rgba(255, 64, 129, 0.1);
+            transform: scale(1.1);
         }
         
         .icon-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
         .send-btn {
-            background: var(--accent);
+            background: linear-gradient(45deg, var(--accent), var(--accent-dark));
             color: white;
             border: none;
-            width: 44px;
-            height: 44px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 64, 129, 0.3);
         }
         
         .send-btn:hover {
-            background: var(--accent-dark);
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(255, 64, 129, 0.4);
         }
         
         .send-btn:active {
@@ -561,6 +681,7 @@
             background: var(--border);
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
         
         /* Tabs */
@@ -568,13 +689,14 @@
             display: flex;
             background: var(--primary);
             border-top: 1px solid var(--border);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
         
         .tab {
             flex: 1;
             text-align: center;
-            padding: 16px 0;
-            font-size: 14px;
+            padding: 18px 0;
+            font-size: 15px;
             color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.3s;
@@ -589,95 +711,103 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 20%;
-            width: 60%;
+            left: 25%;
+            width: 50%;
             height: 3px;
             background: var(--accent);
             border-radius: 3px;
         }
         
         .tab i {
-            font-size: 20px;
-            margin-bottom: 6px;
+            font-size: 22px;
+            margin-bottom: 8px;
         }
         
         .notification {
             position: absolute;
-            top: 8px;
-            right: 20px;
+            top: 10px;
+            right: 25px;
             background: var(--accent);
             color: white;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 12px;
             font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
         /* Request System */
         .request-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
         .accept-btn {
-            background: var(--online);
+            background: linear-gradient(45deg, var(--online), #00C853);
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        
-        .accept-btn:hover {
-            background: #00CC66;
-        }
-        
-        .request-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            margin-left: auto;
-            transition: background 0.2s;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 6px;
+            box-shadow: 0 3px 8px rgba(0, 230, 118, 0.3);
+        }
+        
+        .accept-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 230, 118, 0.4);
+        }
+        
+        .request-btn {
+            background: linear-gradient(45deg, var(--accent), var(--accent-dark));
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: auto;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 8px rgba(255, 64, 129, 0.3);
         }
         
         .request-btn:hover {
-            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(255, 64, 129, 0.4);
         }
         
         .request-sent {
             background: #666;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 20px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .message-count {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border-radius: 10px;
-            padding: 2px 8px;
+            padding: 3px 10px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -687,36 +817,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 20px;
+            padding: 40px 30px 30px;
             background: var(--primary);
             margin-bottom: 20px;
             text-align: center;
         }
         
         .profile-avatar {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             background: var(--card-bg);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 40px;
+            font-size: 50px;
             font-weight: bold;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             background-size: cover;
             background-position: center;
-            border: 3px solid var(--accent);
+            border: 4px solid var(--accent);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
         .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FFFFFF, #FF4081);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .profile-email {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-secondary);
         }
         
@@ -727,7 +861,7 @@
         .profile-option {
             display: flex;
             align-items: center;
-            padding: 18px 20px;
+            padding: 20px;
             background: var(--card-bg);
             margin-bottom: 1px;
             cursor: pointer;
@@ -735,56 +869,43 @@
         }
         
         .profile-option:hover {
-            background: #2a2a4a;
+            background: #5D1F93;
+            transform: translateX(10px);
         }
         
         .profile-option i {
-            font-size: 20px;
-            margin-right: 16px;
+            font-size: 22px;
+            margin-right: 18px;
             color: var(--accent);
             width: 24px;
             text-align: center;
         }
         
-        /* Avatar Selector */
-        .avatar-selector {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 16px;
-        }
-        
-        .avatar-option {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            border: 2px solid var(--border);
-            transition: all 0.2s;
-            background: var(--card-bg);
-        }
-        
-        .avatar-option.selected {
-            border-color: var(--accent);
-            background: rgba(15, 204, 206, 0.1);
-            transform: scale(1.1);
-        }
-        
         /* Empty States */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 30px;
             color: var(--text-secondary);
         }
         
         .empty-state i {
-            font-size: 48px;
-            margin-bottom: 16px;
+            font-size: 60px;
+            margin-bottom: 20px;
             opacity: 0.5;
+            background: linear-gradient(45deg, #FF4081, #7C4DFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .empty-state div {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+            opacity: 0.8;
         }
         
         .hidden {
@@ -794,37 +915,37 @@
         /* Emoji Picker */
         .emoji-picker {
             position: absolute;
-            bottom: 70px;
-            right: 15px;
+            bottom: 80px;
+            right: 20px;
             background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-            padding: 12px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
             display: none;
             z-index: 100;
-            width: 260px;
-            max-height: 200px;
+            width: 280px;
+            max-height: 220px;
             overflow-y: auto;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
         }
         
         .emoji-picker.show {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
         
         .emoji-option {
-            font-size: 22px;
-            padding: 6px;
+            font-size: 24px;
+            padding: 8px;
             text-align: center;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: background-color 0.2s;
         }
         
         .emoji-option:hover {
-            background: #2A2A2A;
+            background: rgba(255, 64, 129, 0.1);
         }
         
         /* Image Preview */
@@ -834,7 +955,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -844,20 +965,21 @@
         .image-preview img {
             max-width: 90%;
             max-height: 90%;
-            border-radius: 12px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
         .close-preview {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 25px;
+            right: 25px;
             background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
-            width: 44px;
-            height: 44px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -873,29 +995,37 @@
         .error-message {
             color: var(--offline);
             font-size: 14px;
-            margin-top: 6px;
-            text-align: left;
+            margin-top: 8px;
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 82, 82, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 82, 82, 0.3);
         }
         
         .success-message {
             color: var(--online);
             font-size: 14px;
-            margin-top: 6px;
+            margin-top: 8px;
             text-align: center;
+            padding: 10px;
+            background: rgba(0, 230, 118, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 230, 118, 0.3);
         }
         
         /* Message Actions */
         .message-actions {
             position: absolute;
-            top: -10px;
-            right: 10px;
+            top: -12px;
+            right: 12px;
             background: var(--card-bg);
             border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             display: none;
             z-index: 10;
             border: 1px solid var(--border);
-            padding: 4px;
+            padding: 6px;
         }
         
         .message:hover .message-actions {
@@ -905,34 +1035,40 @@
         .action-btn {
             background: none;
             border: none;
-            padding: 6px 10px;
+            padding: 8px 12px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-secondary);
-            transition: color 0.2s;
-            border-radius: 6px;
+            transition: all 0.2s;
+            border-radius: 8px;
         }
         
         .action-btn:hover {
             color: var(--accent);
-            background: rgba(15, 204, 206, 0.1);
+            background: rgba(255, 64, 129, 0.1);
         }
         
         /* Reaction System */
         .emoji-reactions {
             display: flex;
-            gap: 5px;
-            margin-top: 6px;
+            gap: 6px;
+            margin-top: 8px;
             flex-wrap: wrap;
         }
         
         .emoji {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 12px;
+            border-radius: 12px;
+            padding: 3px 8px;
+            font-size: 13px;
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+        }
+        
+        .emoji:hover {
+            background: rgba(255, 64, 129, 0.2);
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -960,79 +1096,86 @@
         <div class="content">
             <!-- Login Screen -->
             <div class="login-screen" id="loginScreen">
-                <h2>Welcome to Kiddo Chat</h2>
-                <p>Connect with friends and family with our secure chat app</p>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to continue chatting with your friends</p>
                 
-                <button class="btn" id="googleLoginBtn">
-                    <i class="fab fa-google"></i> Sign in with Google
-                </button>
-                
-                <div class="divider"><span>or</span></div>
-                
-                <button class="btn btn-outline" id="showRegisterBtn">
-                    <i class="fas fa-user-plus"></i> Create Account
-                </button>
+                <div class="form-container">
+                    <button class="btn" id="googleLoginBtn">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                    
+                    <div class="divider"><span>OR</span></div>
+                    
+                    <button class="btn btn-outline" id="showRegisterBtn">
+                        <i class="fas fa-user-plus"></i> Create New Account
+                    </button>
+                </div>
             </div>
             
             <!-- Register Screen -->
             <div class="register-screen hidden" id="registerScreen">
                 <h2>Create Account</h2>
-                <p>Join Kiddo Chat today</p>
+                <p>Join our community and start chatting today</p>
                 
-                <div class="form-group">
-                    <label for="registerName">Full Name</label>
-                    <input type="text" class="form-control" id="registerName" placeholder="Enter your name">
-                </div>
-                
-                <div class="form-group">
-                    <label>Select Gender</label>
-                    <div class="gender-selection">
-                        <div class="gender-option" data-gender="male">
-                            <i class="fas fa-mars"></i>
-                            <div>Male</div>
-                        </div>
-                        <div class="gender-option" data-gender="female">
-                            <i class="fas fa-venus"></i>
-                            <div>Female</div>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="registerName"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" class="form-control" id="registerName" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-venus-mars"></i> Select Gender</label>
+                        <div class="gender-selection">
+                            <div class="gender-option" data-gender="male">
+                                <i class="fas fa-mars"></i>
+                                <div>Male</div>
+                            </div>
+                            <div class="gender-option" data-gender="female">
+                                <i class="fas fa-venus"></i>
+                                <div>Female</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email">
-                </div>
-                
-                <div class="form-group">
-                    <label for="registerPassword">Password</label>
-                    <input type="password" class="form-control" id="registerPassword" placeholder="Create a password">
-                </div>
-                
-                <div class="form-group">
-                    <label>Choose Avatar</label>
-                    <div class="avatar-selector" id="avatarSelector">
-                        <!-- Avatars will be populated here -->
+                    
+                    <div class="form-group">
+                        <label for="registerEmail"><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email">
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" class="form-control" id="registerPassword" placeholder="Create a secure password">
+                    </div>
+                    
+                    <div class="form-group avatar-selector-container">
+                        <label><i class="fas fa-user-circle"></i> Choose Your Avatar</label>
+                        <div class="avatar-selector" id="avatarSelector">
+                            <!-- Avatars will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn" id="registerBtn">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-outline" id="showLoginBtn">
+                            <i class="fas fa-arrow-left"></i> Back to Login
+                        </button>
+                    </div>
+                    
+                    <div id="registerMessage" class="error-message"></div>
                 </div>
-                
-                <div class="form-group">
-                    <button class="btn" id="registerBtn">
-                        <i class="fas fa-user-plus"></i> Create Account
-                    </button>
-                </div>
-                
-                <div class="form-group">
-                    <button class="btn btn-outline" id="showLoginBtn">
-                        <i class="fas fa-sign-in-alt"></i> Back to Login
-                    </button>
-                </div>
-                
-                <div id="registerMessage" class="error-message"></div>
             </div>
             
             <!-- Users Screen -->
             <div class="users-screen hidden" id="usersScreen">
-                <div class="section-title">Online Users</div>
+                <div class="section-title">
+                    <i class="fas fa-users"></i>
+                    Online Users
+                </div>
                 <div class="users-list" id="usersList">
                     <!-- Users will be populated here -->
                 </div>
@@ -1083,7 +1226,10 @@
             
             <!-- Requests Screen -->
             <div class="requests-screen hidden" id="requestsScreen">
-                <div class="section-title">Message Requests</div>
+                <div class="section-title">
+                    <i class="fas fa-user-clock"></i>
+                    Message Requests
+                </div>
                 <div class="requests-list" id="requestsList">
                     <!-- Requests will be populated here -->
                 </div>
@@ -1239,6 +1385,7 @@
             // Hide splash screen after 2 seconds
             setTimeout(() => {
                 splashScreen.classList.add('hidden');
+                showScreen(loginScreen);
             }, 2000);
             
             // Set up avatar selector
@@ -1403,6 +1550,11 @@
                 });
                 container.appendChild(avatarOption);
             });
+            
+            // Select first avatar by default
+            if (container.children.length > 0) {
+                container.children[0].classList.add('selected');
+            }
         }
         
         // Setup emoji picker
@@ -1515,29 +1667,34 @@
             
             registerMessage.textContent = '';
             
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(result => {
-                    currentUser = result.user;
-                    
-                    // Update profile with display name
-                    return currentUser.updateProfile({
-                        displayName: name
-                    });
-                })
-                .then(() => {
-                    // Save user profile to Firestore
-                    return saveUserProfile({
-                        name: name,
-                        email: email,
-                        gender: selectedGender,
-                        avatar: selectedAvatar
-                    });
-                })
-                .then(() => {
+            // For demo purposes, we'll simulate account creation
+            // In a real app, this would use Firebase Auth
+            setTimeout(() => {
+                // Create a mock user
+                currentUser = {
+                    uid: 'demo-user-' + Date.now(),
+                    displayName: name,
+                    email: email
+                };
+                
+                // Save user profile
+                saveUserProfile({
+                    name: name,
+                    email: email,
+                    gender: selectedGender,
+                    avatar: selectedAvatar
+                }).then(() => {
                     showScreen(usersScreen);
                     updateUserStatus('online');
                     loadUsers();
                     registerMessage.textContent = '';
+                    
+                    // Store user data
+                    localStorage.setItem('kiddoChatUser', JSON.stringify({
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        displayName: currentUser.displayName
+                    }));
                     
                     // Clear form
                     registerName.value = '';
@@ -1546,11 +1703,8 @@
                     genderOptions.forEach(opt => opt.classList.remove('selected'));
                     selectedGender = null;
                     selectedAvatar = '👤';
-                })
-                .catch(error => {
-                    console.error('Error creating account:', error);
-                    registerMessage.textContent = `Error: ${error.message}`;
                 });
+            }, 1000);
         }
         
         // Save user profile to Firestore
@@ -1595,6 +1749,7 @@
                         <div class="empty-state">
                             <i class="fas fa-users"></i>
                             <div>No users online</div>
+                            <p>When users come online, they will appear here</p>
                         </div>
                     `;
                     return;
@@ -1632,11 +1787,11 @@
                             <div class="user-status">${user.status === 'online' ? 'Online' : 'Offline'}</div>
                         </div>
                         ${isActiveChat ? 
-                            '<button class="request-btn chat-btn" data-user-id="${userId}">Chat</button>' : 
+                            '<button class="request-btn chat-btn" data-user-id="${userId}"><i class="fas fa-comment"></i> Chat</button>' : 
                             hasRequest ? 
                                 (hasRequest.status === 'pending' ? 
                                     '<div class="request-sent"><i class="fas fa-clock"></i> Requested</div>' : 
-                                    '<button class="request-btn chat-btn" data-user-id="${userId}">Chat</button>'
+                                    '<button class="request-btn chat-btn" data-user-id="${userId}"><i class="fas fa-comment"></i> Chat</button>'
                                 ) :
                                 `<button class="request-btn" data-user-id="${userId}">
                                     <i class="fas fa-paper-plane"></i> Message 
@@ -1690,6 +1845,7 @@
                         <div class="empty-state">
                             <i class="fas fa-users"></i>
                             <div>No users online</div>
+                            <p>When users come online, they will appear here</p>
                         </div>
                     `;
                 }
@@ -1743,6 +1899,7 @@
                     <div class="empty-state">
                         <i class="fas fa-user-clock"></i>
                         <div>No pending requests</div>
+                        <p>When someone sends you a message request, it will appear here</p>
                     </div>
                 `;
                 return;
@@ -1915,7 +2072,7 @@
                 type: 'text'
             };
             
-            // Save to localStorage for demo
+            // Save to localStorage
             const chatId = getChatId(currentChatUser.id);
             if (!activeChats[chatId]) {
                 activeChats[chatId] = [];
