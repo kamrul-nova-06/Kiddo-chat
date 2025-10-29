@@ -39,6 +39,50 @@
             position: relative;
         }
         
+        /* Splash Screen */
+        .splash-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4776E6, #8E54E9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .splash-logo {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .splash-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .splash-subtext {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
         .header {
             background: linear-gradient(135deg, #4776E6, #8E54E9);
             color: white;
@@ -80,6 +124,8 @@
             align-items: center;
             font-weight: bold;
             cursor: pointer;
+            background-size: cover;
+            background-position: center;
         }
         
         .content {
@@ -89,7 +135,7 @@
             background-color: #f5f7fb;
         }
         
-        .login-screen, .users-screen, .chat-screen, .requests-screen, .profile-screen, .register-screen {
+        .login-screen, .users-screen, .chat-screen, .requests-screen, .profile-screen, .register-screen, .edit-profile-screen {
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -278,6 +324,8 @@
             font-weight: bold;
             margin-right: 15px;
             position: relative;
+            background-size: cover;
+            background-position: center;
         }
         
         .user-details {
@@ -388,6 +436,7 @@
             max-width: 100%;
             border-radius: 10px;
             margin-top: 5px;
+            cursor: pointer;
         }
         
         .chat-input {
@@ -520,6 +569,7 @@
             border-radius: 10px;
             padding: 2px 5px;
             font-size: 12px;
+            cursor: pointer;
         }
         
         .reply-indicator {
@@ -588,6 +638,8 @@
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 10px;
+            background-size: cover;
+            background-position: center;
         }
         
         .profile-name {
@@ -614,9 +666,139 @@
             margin-top: 5px;
             text-align: center;
         }
+        
+        /* Emoji Picker */
+        .emoji-picker {
+            position: absolute;
+            bottom: 70px;
+            right: 15px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            z-index: 100;
+            width: 250px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .emoji-picker.show {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+        }
+        
+        .emoji-option {
+            font-size: 20px;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .emoji-option:hover {
+            background-color: #f0f2f5;
+        }
+        
+        /* Image Preview */
+        .image-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+        
+        .image-preview img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+        
+        .close-preview {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Avatar Upload */
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin-bottom: 15px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+        }
+        
+        .avatar-upload-btn {
+            background: #4776E6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* Request Button */
+        .request-btn {
+            background: #4776E6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: auto;
+        }
+        
+        .request-sent {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-left: auto;
+        }
     </style>
 </head>
 <body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-logo">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="splash-text">Kiddo Chat</div>
+        <div class="splash-subtext">Connecting people worldwide</div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div class="logo">
@@ -676,10 +858,6 @@
                         <div class="gender-option" data-gender="female">
                             <i class="fas fa-venus"></i>
                             <div>Female</div>
-                        </div>
-                        <div class="gender-option" data-gender="other">
-                            <i class="fas fa-transgender"></i>
-                            <div>Other</div>
                         </div>
                     </div>
                 </div>
@@ -763,6 +941,11 @@
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
+                
+                <!-- Emoji Picker -->
+                <div class="emoji-picker" id="emojiPicker">
+                    <!-- Emojis will be populated here -->
+                </div>
             </div>
             
             <!-- Requests Screen -->
@@ -782,19 +965,64 @@
                 </div>
                 
                 <div class="profile-options">
-                    <div class="profile-option" id="changePasswordOption">
-                        <i class="fas fa-key"></i>
-                        <div>Change Password</div>
-                    </div>
                     <div class="profile-option" id="editProfileOption">
                         <i class="fas fa-user-edit"></i>
                         <div>Edit Profile</div>
+                    </div>
+                    <div class="profile-option" id="changePasswordOption">
+                        <i class="fas fa-key"></i>
+                        <div>Change Password</div>
                     </div>
                     <div class="profile-option" id="logoutOption">
                         <i class="fas fa-sign-out-alt"></i>
                         <div>Logout</div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Edit Profile Screen -->
+            <div class="edit-profile-screen hidden" id="editProfileScreen">
+                <div class="profile-header">
+                    <div class="avatar-upload">
+                        <div class="avatar-preview" id="avatarPreview">U</div>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        <button class="avatar-upload-btn" id="avatarUploadBtn">Change Avatar</button>
+                    </div>
+                    <div class="profile-name" id="editProfileName">User Name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editName">Full Name</label>
+                    <input type="text" class="form-control" id="editName" placeholder="Enter your name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="gender-selection">
+                        <div class="gender-option" data-gender="male">
+                            <i class="fas fa-mars"></i>
+                            <div>Male</div>
+                        </div>
+                        <div class="gender-option" data-gender="female">
+                            <i class="fas fa-venus"></i>
+                            <div>Female</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn" id="saveProfileBtn">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-outline" id="backToProfileBtn">
+                        <i class="fas fa-arrow-left"></i> Back to Profile
+                    </button>
+                </div>
+                
+                <div id="profileMessage" class="error-message"></div>
             </div>
         </div>
         
@@ -806,7 +1034,7 @@
             <div class="tab" id="requestsTab">
                 <i class="fas fa-user-clock"></i>
                 <div>Requests</div>
-                <div class="notification hidden" id="requestsNotification">3</div>
+                <div class="notification hidden" id="requestsNotification">0</div>
             </div>
             <div class="tab" id="chatsTab">
                 <i class="fas fa-comment"></i>
@@ -814,6 +1042,17 @@
             </div>
         </div>
     </div>
+
+    <!-- Image Preview Modal -->
+    <div class="image-preview hidden" id="imagePreview">
+        <button class="close-preview" id="closePreview">
+            <i class="fas fa-times"></i>
+        </button>
+        <img id="previewImage" src="" alt="Preview">
+    </div>
+
+    <!-- Audio for notifications -->
+    <audio id="messageSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
 
     <script>
         // Firebase configuration
@@ -835,12 +1074,17 @@
         const firestore = firebase.firestore();
         
         // DOM Elements
+        const splashScreen = document.getElementById('splashScreen');
         const loginScreen = document.getElementById('loginScreen');
         const registerScreen = document.getElementById('registerScreen');
         const usersScreen = document.getElementById('usersScreen');
         const chatScreen = document.getElementById('chatScreen');
         const requestsScreen = document.getElementById('requestsScreen');
         const profileScreen = document.getElementById('profileScreen');
+        const editProfileScreen = document.getElementById('editProfileScreen');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+        const closePreview = document.getElementById('closePreview');
         
         const usersList = document.getElementById('usersList');
         const chatMessages = document.getElementById('chatMessages');
@@ -857,6 +1101,7 @@
         const sendBtn = document.getElementById('sendBtn');
         const attachBtn = document.getElementById('attachBtn');
         const emojiBtn = document.getElementById('emojiBtn');
+        const emojiPicker = document.getElementById('emojiPicker');
         
         const usersTab = document.getElementById('usersTab');
         const requestsTab = document.getElementById('requestsTab');
@@ -880,6 +1125,15 @@
         const editProfileOption = document.getElementById('editProfileOption');
         const logoutOption = document.getElementById('logoutOption');
         
+        const editProfileName = document.getElementById('editProfileName');
+        const editName = document.getElementById('editName');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarUploadBtn = document.getElementById('avatarUploadBtn');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+        const backToProfileBtn = document.getElementById('backToProfileBtn');
+        const profileMessage = document.getElementById('profileMessage');
+        
         const registerName = document.getElementById('registerName');
         const registerEmail = document.getElementById('registerEmail');
         const registerPassword = document.getElementById('registerPassword');
@@ -887,14 +1141,24 @@
         const registerMessage = document.getElementById('registerMessage');
         const genderOptions = document.querySelectorAll('.gender-option');
         
+        const messageSound = document.getElementById('messageSound');
+        
         // App State
         let currentUser = null;
         let currentChatUser = null;
         let replyingToMessage = null;
         let selectedGender = null;
+        let editGender = null;
+        let avatarBase64 = null;
+        let emojis = ['😀', '😂', '🥰', '😍', '🤩', '😎', '🥳', '😜', '🤗', '👍', '❤️', '🔥', '🎉', '🙏', '💯'];
         
         // Initialize the app
         function initApp() {
+            // Hide splash screen after 2 seconds
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+            }, 2000);
+            
             // Set up gender selection
             genderOptions.forEach(option => {
                 option.addEventListener('click', () => {
@@ -903,6 +1167,9 @@
                     selectedGender = option.getAttribute('data-gender');
                 });
             });
+            
+            // Set up emoji picker
+            setupEmojiPicker();
             
             // Check if user is already signed in
             auth.onAuthStateChanged(user => {
@@ -972,13 +1239,28 @@
             });
             
             attachBtn.addEventListener('click', () => {
-                // In a real app, this would open a file picker
-                alert('Image attachment feature would be implemented here');
+                // Open file picker for image selection
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        convertImageToBase64(file);
+                    }
+                };
+                fileInput.click();
             });
             
             emojiBtn.addEventListener('click', () => {
-                // In a real app, this would open an emoji picker
-                alert('Emoji picker would be implemented here');
+                emojiPicker.classList.toggle('show');
+            });
+            
+            // Close emoji picker when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!emojiBtn.contains(e.target) && !emojiPicker.contains(e.target)) {
+                    emojiPicker.classList.remove('show');
+                }
             });
             
             profileBtn.addEventListener('click', () => {
@@ -986,8 +1268,80 @@
             });
             
             changePasswordOption.addEventListener('click', changePassword);
-            editProfileOption.addEventListener('click', editProfile);
+            editProfileOption.addEventListener('click', showEditProfile);
             logoutOption.addEventListener('click', logout);
+            
+            avatarUploadBtn.addEventListener('click', () => {
+                avatarInput.click();
+            });
+            
+            avatarInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        avatarBase64 = event.target.result;
+                        avatarPreview.style.backgroundImage = `url(${avatarBase64})`;
+                        avatarPreview.textContent = '';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            saveProfileBtn.addEventListener('click', saveProfile);
+            backToProfileBtn.addEventListener('click', () => showScreen(profileScreen));
+            
+            closePreview.addEventListener('click', () => {
+                imagePreview.classList.add('hidden');
+            });
+        }
+        
+        // Setup emoji picker
+        function setupEmojiPicker() {
+            emojis.forEach(emoji => {
+                const emojiOption = document.createElement('div');
+                emojiOption.className = 'emoji-option';
+                emojiOption.textContent = emoji;
+                emojiOption.addEventListener('click', () => {
+                    messageInput.value += emoji;
+                    emojiPicker.classList.remove('show');
+                    messageInput.focus();
+                });
+                emojiPicker.appendChild(emojiOption);
+            });
+        }
+        
+        // Convert image to base64
+        function convertImageToBase64(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                sendImageMessage(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Send image message
+        function sendImageMessage(base64Image) {
+            if (!currentChatUser) return;
+            
+            const message = {
+                type: 'image',
+                imageUrl: base64Image,
+                senderId: currentUser.uid,
+                senderName: currentUser.displayName,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            firestore.collection('chats')
+                .doc(getChatId(currentChatUser.id))
+                .collection('messages')
+                .add(message)
+                .then(() => {
+                    playNotificationSound();
+                })
+                .catch(error => {
+                    console.error('Error sending image message:', error);
+                });
         }
         
         // Firebase Authentication - Google
@@ -1004,7 +1358,7 @@
                     saveUserProfile({
                         name: currentUser.displayName,
                         email: currentUser.email,
-                        gender: 'other', // Default gender
+                        gender: 'male', // Default gender
                         avatar: currentUser.photoURL
                     });
                 })
@@ -1145,6 +1499,10 @@
                     const user = users[userId];
                     const userItem = document.createElement('div');
                     userItem.className = 'user-item';
+                    
+                    // Check if chat request already sent
+                    const requestSent = checkIfRequestSent(userId);
+                    
                     userItem.innerHTML = `
                         <div class="user-avatar">${user.name ? user.name.charAt(0).toUpperCase() : 'U'}</div>
                         <div class="user-details">
@@ -1153,16 +1511,117 @@
                                 ${user.status === 'online' ? 'Online' : 'Last seen recently'}
                             </div>
                         </div>
+                        ${requestSent ? 
+                            '<div class="request-sent">Request Sent</div>' : 
+                            '<button class="request-btn" data-user-id="${userId}">Send Request</button>'
+                        }
                     `;
                     
-                    userItem.addEventListener('click', () => {
-                        // In a real app, this would send a chat request first
-                        // For demo purposes, we'll directly start a chat
-                        startChat(userId, user);
+                    usersList.appendChild(userItem);
+                    
+                    // Add event listener for request button
+                    const requestBtn = userItem.querySelector('.request-btn');
+                    if (requestBtn) {
+                        requestBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            sendChatRequest(userId, user);
+                            requestBtn.textContent = 'Request Sent';
+                            requestBtn.className = 'request-sent';
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Check if chat request already sent
+        function checkIfRequestSent(userId) {
+            // This would check in Firebase in a real app
+            // For demo, we'll use a simple approach
+            return localStorage.getItem(`request_${userId}`) === 'sent';
+        }
+        
+        // Send chat request
+        function sendChatRequest(userId, user) {
+            // Store in localStorage for demo
+            localStorage.setItem(`request_${userId}`, 'sent');
+            
+            // In a real app, this would save to Firebase
+            database.ref('chatRequests/' + userId).push({
+                fromId: currentUser.uid,
+                fromName: currentUser.displayName,
+                status: 'pending',
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+        
+        // Load chat requests
+        function loadChatRequests() {
+            database.ref('chatRequests/' + currentUser.uid).on('value', snapshot => {
+                requestsList.innerHTML = '';
+                const requests = snapshot.val();
+                
+                if (!requests) {
+                    requestsList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No pending requests</p>';
+                    return;
+                }
+                
+                Object.keys(requests).forEach(requestId => {
+                    const request = requests[requestId];
+                    if (request.status !== 'pending') return;
+                    
+                    const requestItem = document.createElement('div');
+                    requestItem.className = 'request-item';
+                    requestItem.innerHTML = `
+                        <div class="user-avatar">${request.fromName ? request.fromName.charAt(0).toUpperCase() : 'U'}</div>
+                        <div class="user-details">
+                            <div class="user-name">${request.fromName || 'Unknown User'}</div>
+                            <div class="user-status">Wants to chat with you</div>
+                        </div>
+                        <div class="request-actions">
+                            <button class="accept-btn" data-request-id="${requestId}" data-user-id="${request.fromId}">Accept</button>
+                            <button class="decline-btn" data-request-id="${requestId}">Decline</button>
+                        </div>
+                    `;
+                    
+                    requestsList.appendChild(requestItem);
+                    
+                    // Add event listeners for accept/decline buttons
+                    const acceptBtn = requestItem.querySelector('.accept-btn');
+                    const declineBtn = requestItem.querySelector('.decline-btn');
+                    
+                    acceptBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const userId = acceptBtn.getAttribute('data-user-id');
+                        acceptChatRequest(requestId, userId);
                     });
                     
-                    usersList.appendChild(userItem);
+                    declineBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        declineChatRequest(requestId);
+                    });
                 });
+            });
+        }
+        
+        // Accept chat request
+        function acceptChatRequest(requestId, fromId) {
+            database.ref('chatRequests/' + currentUser.uid + '/' + requestId).update({
+                status: 'accepted'
+            });
+            
+            // Load the user and start chatting
+            database.ref('users/' + fromId).once('value', snapshot => {
+                const user = snapshot.val();
+                if (user) {
+                    startChat(fromId, user);
+                }
+            });
+        }
+        
+        // Decline chat request
+        function declineChatRequest(requestId) {
+            database.ref('chatRequests/' + currentUser.uid + '/' + requestId).update({
+                status: 'declined'
             });
         }
         
@@ -1198,6 +1657,14 @@
                     setTimeout(() => {
                         chatMessages.scrollTop = chatMessages.scrollHeight;
                     }, 100);
+                    
+                    // Play sound for received messages
+                    if (snapshot.docChanges().some(change => 
+                        change.type === 'added' && 
+                        change.doc.data().senderId !== currentUser.uid
+                    )) {
+                        playNotificationSound();
+                    }
                 });
         }
         
@@ -1226,9 +1693,6 @@
                     messageInput.value = '';
                     replyIndicator.classList.add('hidden');
                     replyingToMessage = null;
-                    
-                    // Play notification sound for the recipient
-                    playNotificationSound();
                 })
                 .catch(error => {
                     console.error('Error sending message:', error);
@@ -1256,7 +1720,7 @@
                 `;
             } else if (message.type === 'image') {
                 messageContent += `
-                    <img src="${message.imageUrl}" class="message-image" alt="Sent image">
+                    <img src="${message.imageUrl}" class="message-image" alt="Sent image" data-image="${message.imageUrl}">
                 `;
             }
             
@@ -1267,9 +1731,9 @@
                     <span>${formatTime(timestamp)}</span>
                     <span>${message.senderName}</span>
                 </div>
-                <div class="emoji-reactions">
+                <div class="emoji-reactions" id="reactions-${messageId}">
                     ${message.reactions ? Object.entries(message.reactions).map(([emoji, users]) => 
-                        `<span class="emoji">${emoji} ${users.length}</span>`
+                        `<span class="emoji" data-emoji="${emoji}" data-message="${messageId}">${emoji} ${users.length}</span>`
                     ).join('') : ''}
                 </div>
                 <div class="message-actions">
@@ -1298,6 +1762,8 @@
             const reactBtn = messageDiv.querySelector('.react-btn');
             const editBtn = messageDiv.querySelector('.edit-btn');
             const deleteBtn = messageDiv.querySelector('.delete-btn');
+            const messageImage = messageDiv.querySelector('.message-image');
+            const emojiReactions = messageDiv.querySelectorAll('.emoji');
             
             if (replyBtn) {
                 replyBtn.addEventListener('click', () => {
@@ -1314,8 +1780,8 @@
             
             if (reactBtn) {
                 reactBtn.addEventListener('click', () => {
-                    // In a real app, this would open a reaction picker
-                    addReaction(messageId, '👍');
+                    // Show emoji picker for reactions
+                    showReactionPicker(messageId);
                 });
             }
             
@@ -1335,6 +1801,53 @@
                     }
                 });
             }
+            
+            if (messageImage) {
+                messageImage.addEventListener('click', () => {
+                    previewImage.src = messageImage.getAttribute('data-image');
+                    imagePreview.classList.remove('hidden');
+                });
+            }
+            
+            emojiReactions.forEach(emoji => {
+                emoji.addEventListener('click', () => {
+                    const emojiChar = emoji.getAttribute('data-emoji');
+                    const msgId = emoji.getAttribute('data-message');
+                    addReaction(msgId, emojiChar);
+                });
+            });
+        }
+        
+        // Show reaction picker
+        function showReactionPicker(messageId) {
+            const reactionPicker = document.createElement('div');
+            reactionPicker.className = 'emoji-picker show';
+            reactionPicker.style.position = 'absolute';
+            reactionPicker.style.bottom = '50px';
+            reactionPicker.style.right = '50px';
+            
+            emojis.forEach(emoji => {
+                const emojiOption = document.createElement('div');
+                emojiOption.className = 'emoji-option';
+                emojiOption.textContent = emoji;
+                emojiOption.addEventListener('click', () => {
+                    addReaction(messageId, emoji);
+                    document.body.removeChild(reactionPicker);
+                });
+                reactionPicker.appendChild(emojiOption);
+            });
+            
+            document.body.appendChild(reactionPicker);
+            
+            // Close reaction picker when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closePicker(e) {
+                    if (!reactionPicker.contains(e.target)) {
+                        document.body.removeChild(reactionPicker);
+                        document.removeEventListener('click', closePicker);
+                    }
+                });
+            }, 100);
         }
         
         // Add reaction to a message
@@ -1397,74 +1910,6 @@
             });
         }
         
-        // Load chat requests
-        function loadChatRequests() {
-            database.ref('chatRequests/' + currentUser.uid).on('value', snapshot => {
-                requestsList.innerHTML = '';
-                const requests = snapshot.val();
-                
-                if (!requests) {
-                    requestsList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No pending requests</p>';
-                    return;
-                }
-                
-                Object.keys(requests).forEach(requestId => {
-                    const request = requests[requestId];
-                    if (request.status !== 'pending') return;
-                    
-                    const requestItem = document.createElement('div');
-                    requestItem.className = 'request-item';
-                    requestItem.innerHTML = `
-                        <div class="user-avatar">${request.fromName ? request.fromName.charAt(0).toUpperCase() : 'U'}</div>
-                        <div class="user-details">
-                            <div class="user-name">${request.fromName || 'Unknown User'}</div>
-                            <div class="user-status">Wants to chat with you</div>
-                        </div>
-                        <div class="request-actions">
-                            <button class="accept-btn" data-request-id="${requestId}">Accept</button>
-                            <button class="decline-btn" data-request-id="${requestId}">Decline</button>
-                        </div>
-                    `;
-                    
-                    requestsList.appendChild(requestItem);
-                    
-                    // Add event listeners for accept/decline buttons
-                    const acceptBtn = requestItem.querySelector('.accept-btn');
-                    const declineBtn = requestItem.querySelector('.decline-btn');
-                    
-                    acceptBtn.addEventListener('click', () => {
-                        acceptChatRequest(requestId, request.fromId);
-                    });
-                    
-                    declineBtn.addEventListener('click', () => {
-                        declineChatRequest(requestId);
-                    });
-                });
-            });
-        }
-        
-        // Accept a chat request
-        function acceptChatRequest(requestId, fromId) {
-            database.ref('chatRequests/' + currentUser.uid + '/' + requestId).update({
-                status: 'accepted'
-            });
-            
-            // Load the user and start chatting
-            database.ref('users/' + fromId).once('value', snapshot => {
-                const user = snapshot.val();
-                if (user) {
-                    startChat(fromId, user);
-                }
-            });
-        }
-        
-        // Decline a chat request
-        function declineChatRequest(requestId) {
-            database.ref('chatRequests/' + currentUser.uid + '/' + requestId).update({
-                status: 'declined'
-            });
-        }
-        
         // Update profile information
         function updateProfileInfo() {
             if (!currentUser) return;
@@ -1472,10 +1917,89 @@
             profileName.textContent = currentUser.displayName || 'User Name';
             profileEmail.textContent = currentUser.email || 'user@example.com';
             profileAvatar.textContent = currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : 'U';
+            profileAvatar.style.backgroundImage = currentUser.photoURL ? `url(${currentUser.photoURL})` : '';
+            profileAvatar.style.backgroundSize = 'cover';
+            profileAvatar.style.backgroundPosition = 'center';
             
             // Also update the header avatar
             const headerAvatar = document.querySelector('.header .avatar');
             headerAvatar.textContent = currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : 'U';
+            headerAvatar.style.backgroundImage = currentUser.photoURL ? `url(${currentUser.photoURL})` : '';
+            headerAvatar.style.backgroundSize = 'cover';
+            headerAvatar.style.backgroundPosition = 'center';
+        }
+        
+        // Show edit profile screen
+        function showEditProfile() {
+            showScreen(editProfileScreen);
+            editName.value = currentUser.displayName || '';
+            editProfileName.textContent = currentUser.displayName || 'User Name';
+            
+            // Load current gender
+            firestore.collection('users').doc(currentUser.uid).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        editGender = userData.gender || 'male';
+                        
+                        // Select the current gender
+                        genderOptions.forEach(option => {
+                            if (option.getAttribute('data-gender') === editGender) {
+                                option.classList.add('selected');
+                            } else {
+                                option.classList.remove('selected');
+                            }
+                        });
+                    }
+                });
+            
+            // Set up gender selection for edit
+            genderOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    genderOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    editGender = option.getAttribute('data-gender');
+                });
+            });
+        }
+        
+        // Save profile
+        function saveProfile() {
+            const newName = editName.value.trim();
+            if (!newName) {
+                profileMessage.textContent = 'Please enter your name.';
+                return;
+            }
+            
+            profileMessage.textContent = '';
+            
+            currentUser.updateProfile({
+                displayName: newName,
+                photoURL: avatarBase64 || currentUser.photoURL
+            })
+                .then(() => {
+                    // Update in Firestore as well
+                    const updateData = {
+                        name: newName,
+                        gender: editGender
+                    };
+                    
+                    if (avatarBase64) {
+                        updateData.avatar = avatarBase64;
+                    }
+                    
+                    return firestore.collection('users').doc(currentUser.uid).update(updateData);
+                })
+                .then(() => {
+                    updateProfileInfo();
+                    showScreen(profileScreen);
+                    profileMessage.textContent = '';
+                    avatarBase64 = null;
+                })
+                .catch(error => {
+                    console.error('Error updating profile:', error);
+                    profileMessage.textContent = 'Error updating profile. Please try again.';
+                });
         }
         
         // Change password
@@ -1493,30 +2017,6 @@
                 });
         }
         
-        // Edit profile
-        function editProfile() {
-            const newName = prompt('Enter your new name:', currentUser.displayName);
-            if (!newName) return;
-            
-            currentUser.updateProfile({
-                displayName: newName
-            })
-                .then(() => {
-                    // Update in Firestore as well
-                    return firestore.collection('users').doc(currentUser.uid).update({
-                        name: newName
-                    });
-                })
-                .then(() => {
-                    updateProfileInfo();
-                    alert('Profile updated successfully!');
-                })
-                .catch(error => {
-                    console.error('Error updating profile:', error);
-                    alert('Error updating profile. Please try again.');
-                });
-        }
-        
         // Logout
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
@@ -1530,6 +2030,12 @@
                         console.error('Error signing out:', error);
                     });
             }
+        }
+        
+        // Play notification sound
+        function playNotificationSound() {
+            messageSound.currentTime = 0;
+            messageSound.play().catch(e => console.log('Audio play failed:', e));
         }
         
         // Utility functions
@@ -1550,6 +2056,7 @@
             chatScreen.classList.add('hidden');
             requestsScreen.classList.add('hidden');
             profileScreen.classList.add('hidden');
+            editProfileScreen.classList.add('hidden');
             
             screen.classList.remove('hidden');
         }
@@ -1560,11 +2067,6 @@
             chatsTab.classList.remove('active');
             
             tab.classList.add('active');
-        }
-        
-        function playNotificationSound() {
-            // In a real app, this would play a sound
-            console.log('Notification sound played');
         }
         
         // Initialize the app when the page loads
