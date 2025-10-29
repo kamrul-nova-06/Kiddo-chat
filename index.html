@@ -18,19 +18,22 @@
         }
         
         :root {
-            --primary: #000000;
-            --secondary: #121212;
-            --accent: #FE2C55;
-            --text-primary: #FFFFFF;
-            --text-secondary: #A8A8A8;
-            --border: #2F2F2F;
-            --card-bg: #1E1E1E;
-            --online: #00FF7F;
-            --offline: #FF4757;
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0fccce;
+            --accent-dark: #0db9bb;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --border: #2a2a4a;
+            --card-bg: #22223d;
+            --online: #00ff95;
+            --offline: #ff4757;
+            --sent-bubble: #0fccce;
+            --received-bubble: #2d2d4d;
         }
         
         body {
-            background: var(--primary);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -50,6 +53,7 @@
             flex-direction: column;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
         }
         
         /* Splash Screen */
@@ -59,7 +63,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #000000, #FE2C55);
+            background: linear-gradient(135deg, #1a1a2e 0%, #0fccce 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -89,9 +93,6 @@
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(45deg, #FFFFFF, #FE2C55);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
         .splash-subtext {
@@ -123,9 +124,6 @@
         .logo h1 {
             font-size: 22px;
             font-weight: 700;
-            background: linear-gradient(45deg, #FFFFFF, #FE2C55);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
         .user-info {
@@ -235,7 +233,7 @@
         
         .gender-option.selected {
             border-color: var(--accent);
-            background: rgba(254, 44, 85, 0.1);
+            background: rgba(15, 204, 206, 0.1);
         }
         
         .gender-option i {
@@ -258,12 +256,13 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: transform 0.2s;
+            transition: all 0.3s;
             width: 100%;
             justify-content: center;
         }
         
         .btn:hover {
+            background: var(--accent-dark);
             transform: translateY(-2px);
         }
         
@@ -275,6 +274,10 @@
             background: transparent;
             color: var(--accent);
             border: 2px solid var(--accent);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(15, 204, 206, 0.1);
         }
         
         .divider {
@@ -323,7 +326,7 @@
         }
         
         .user-item:hover, .request-item:hover {
-            background: #2A2A2A;
+            background: #2a2a4a;
             border-left-color: var(--accent);
         }
         
@@ -426,14 +429,14 @@
         }
         
         .received {
-            background: var(--card-bg);
+            background: var(--received-bubble);
             border-bottom-left-radius: 5px;
             align-self: flex-start;
             border: 1px solid var(--border);
         }
         
         .sent {
-            background: var(--accent);
+            background: var(--sent-bubble);
             color: white;
             border-bottom-right-radius: 5px;
             align-self: flex-end;
@@ -453,6 +456,7 @@
             border-radius: 12px;
             margin-top: 6px;
             cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .chat-input-container {
@@ -466,6 +470,15 @@
             color: var(--text-secondary);
             font-size: 12px;
             margin-bottom: 8px;
+            padding: 8px;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+        
+        .message-limit.active {
+            background: rgba(0, 255, 149, 0.1);
+            border: 1px solid rgba(0, 255, 149, 0.3);
         }
         
         .chat-input {
@@ -496,6 +509,11 @@
             color: var(--text-primary);
         }
         
+        .message-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
         .icon-btn {
             background: none;
             border: none;
@@ -508,7 +526,12 @@
         }
         
         .icon-btn:hover {
-            background: rgba(254, 44, 85, 0.1);
+            background: rgba(15, 204, 206, 0.1);
+        }
+        
+        .icon-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .send-btn {
@@ -522,15 +545,22 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
         
         .send-btn:hover {
+            background: var(--accent-dark);
             transform: scale(1.05);
         }
         
         .send-btn:active {
             transform: scale(0.95);
+        }
+        
+        .send-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            transform: none;
         }
         
         /* Tabs */
@@ -620,10 +650,13 @@
             font-weight: 500;
             margin-left: auto;
             transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .request-btn:hover {
-            background: #E0204F;
+            background: var(--accent-dark);
         }
         
         .request-sent {
@@ -635,15 +668,18 @@
             font-size: 14px;
             font-weight: 500;
             margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .message-count {
-            background: var(--accent);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border-radius: 10px;
             padding: 2px 8px;
             font-size: 12px;
-            margin-left: 8px;
+            font-weight: bold;
         }
         
         /* Profile */
@@ -699,7 +735,7 @@
         }
         
         .profile-option:hover {
-            background: #2A2A2A;
+            background: #2a2a4a;
         }
         
         .profile-option i {
@@ -734,7 +770,7 @@
         
         .avatar-option.selected {
             border-color: var(--accent);
-            background: rgba(254, 44, 85, 0.1);
+            background: rgba(15, 204, 206, 0.1);
             transform: scale(1.1);
         }
         
@@ -846,6 +882,57 @@
             font-size: 14px;
             margin-top: 6px;
             text-align: center;
+        }
+        
+        /* Message Actions */
+        .message-actions {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 10;
+            border: 1px solid var(--border);
+            padding: 4px;
+        }
+        
+        .message:hover .message-actions {
+            display: flex;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+            border-radius: 6px;
+        }
+        
+        .action-btn:hover {
+            color: var(--accent);
+            background: rgba(15, 204, 206, 0.1);
+        }
+        
+        /* Reaction System */
+        .emoji-reactions {
+            display: flex;
+            gap: 5px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .emoji {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
@@ -970,7 +1057,7 @@
                 
                 <div class="chat-input-container">
                     <div class="message-limit" id="messageLimit">
-                        Messages remaining: <span id="remainingCount">3</span>/3
+                        <i class="fas fa-info-circle"></i> You can send <span id="remainingCount">3</span> more messages
                     </div>
                     <div class="chat-input">
                         <button class="icon-btn" id="attachBtn">
@@ -1139,11 +1226,12 @@
         let chatRequests = {};
         let messageCounts = {};
         let userStatuses = {};
+        let messageReactions = {};
         
         // Avatar options
         const avatarOptions = ['👤', '🗿', '🦸‍♂️', '🪼', '😎', '🧞‍♀️', '🤵', '🤖', '🧝‍♂️', '👾', '👨🏻‍💼', '👩🏻', '👑', '👻', '👩🏻‍🦱', '🧙‍♂️', '🧟‍♂️', '😊', '🧝🏼', '🙎‍♂️', '🧔🏻‍♂️', '🙎', '🙎🏻‍♀️', '🥷🏻', '👩🏻‍🚀', '🧑🏻‍🚀'];
         
-        // Emoji options
+        // Emoji options for reactions
         const emojis = ['😀', '😂', '🥰', '😍', '🤩', '😎', '🥳', '😜', '🤗', '👍', '❤️', '🔥', '🎉', '🙏', '💯', '😊', '😢', '😡', '👏', '🎂', '⭐', '🌈', '🐱', '🐶', '🌹'];
         
         // Initialize the app
@@ -1205,6 +1293,14 @@
             backToUsers.addEventListener('click', () => showScreen(usersScreen));
             sendBtn.addEventListener('click', sendMessage);
             
+            // Enter key to send message
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
             usersTab.addEventListener('click', () => {
                 setActiveTab(usersTab);
                 showScreen(usersScreen);
@@ -1259,7 +1355,12 @@
                 imagePreview.classList.add('hidden');
             });
             
-            // Load active chats from localStorage
+            // Load data from localStorage
+            loadLocalStorageData();
+        }
+        
+        // Load data from localStorage
+        function loadLocalStorageData() {
             const storedChats = localStorage.getItem('kiddoChatActiveChats');
             if (storedChats) {
                 activeChats = JSON.parse(storedChats);
@@ -1273,6 +1374,11 @@
             const storedMessageCounts = localStorage.getItem('kiddoChatMessageCounts');
             if (storedMessageCounts) {
                 messageCounts = JSON.parse(storedMessageCounts);
+            }
+            
+            const storedReactions = localStorage.getItem('kiddoChatReactions');
+            if (storedReactions) {
+                messageReactions = JSON.parse(storedReactions);
             }
         }
         
@@ -1301,6 +1407,7 @@
         
         // Setup emoji picker
         function setupEmojiPicker() {
+            emojiPicker.innerHTML = '';
             emojis.forEach(emoji => {
                 const emojiOption = document.createElement('div');
                 emojiOption.className = 'emoji-option';
@@ -1327,6 +1434,15 @@
         function sendImageMessage(base64Image) {
             if (!currentChatUser) return;
             
+            // Check message limit
+            const messageCountKey = `${currentUser.uid}_${currentChatUser.id}`;
+            const sentMessageCount = messageCounts[messageCountKey] || 0;
+            
+            if (sentMessageCount >= 3) {
+                alert("You've reached the message limit. Wait for a reply to send more messages.");
+                return;
+            }
+            
             const message = {
                 type: 'image',
                 imageUrl: base64Image,
@@ -1335,8 +1451,7 @@
                 timestamp: new Date()
             };
             
-            // In a real app, this would save to Firebase
-            // For demo, we'll use localStorage
+            // Save to localStorage
             const chatId = getChatId(currentChatUser.id);
             if (!activeChats[chatId]) {
                 activeChats[chatId] = [];
@@ -1349,8 +1464,12 @@
             
             localStorage.setItem('kiddoChatActiveChats', JSON.stringify(activeChats));
             
-            // Reload messages
+            // Update message count
+            updateMessageCount(currentChatUser.id);
+            
+            // Reload messages and update limit
             loadMessages(currentChatUser.id);
+            updateMessageLimit();
             playNotificationSound();
         }
         
@@ -1516,11 +1635,12 @@
                             '<button class="request-btn chat-btn" data-user-id="${userId}">Chat</button>' : 
                             hasRequest ? 
                                 (hasRequest.status === 'pending' ? 
-                                    '<div class="request-sent">Requested</div>' : 
+                                    '<div class="request-sent"><i class="fas fa-clock"></i> Requested</div>' : 
                                     '<button class="request-btn chat-btn" data-user-id="${userId}">Chat</button>'
                                 ) :
                                 `<button class="request-btn" data-user-id="${userId}">
-                                    Message ${canSendMore ? `<span class="message-count">${3 - sentMessageCount}</span>` : ''}
+                                    <i class="fas fa-paper-plane"></i> Message 
+                                    ${canSendMore ? `<span class="message-count">${3 - sentMessageCount}</span>` : ''}
                                 </button>`
                         }
                     `;
@@ -1537,9 +1657,13 @@
                             if (canSendMore) {
                                 sendChatRequest(userId, user);
                                 updateMessageCount(userId);
-                                requestBtn.innerHTML = `Message <span class="message-count">${2 - sentMessageCount}</span>`;
-                                if (sentMessageCount >= 2) {
-                                    requestBtn.innerHTML = 'Requested';
+                                
+                                // Update button text
+                                const newCount = 2 - sentMessageCount;
+                                if (newCount > 0) {
+                                    requestBtn.innerHTML = `<i class="fas fa-paper-plane"></i> Message <span class="message-count">${newCount}</span>`;
+                                } else {
+                                    requestBtn.innerHTML = '<i class="fas fa-clock"></i> Requested';
                                     requestBtn.className = 'request-sent';
                                 }
                             }
@@ -1600,6 +1724,9 @@
                 status: 'pending',
                 timestamp: firebase.database.ServerValue.TIMESTAMP
             });
+            
+            // Update notification count
+            updateNotificationCount();
         }
         
         // Load chat requests
@@ -1631,7 +1758,9 @@
                         <div class="user-status">Wants to chat with you</div>
                     </div>
                     <div class="request-actions">
-                        <button class="accept-btn" data-user-id="${request.fromId}">Accept</button>
+                        <button class="accept-btn" data-user-id="${request.fromId}">
+                            <i class="fas fa-check"></i> Accept
+                        </button>
                     </div>
                 `;
                 
@@ -1727,11 +1856,15 @@
             if (remaining <= 0) {
                 messageInput.disabled = true;
                 messageInput.placeholder = "Wait for reply to send more messages";
-                messageLimit.style.color = "#FF4757";
+                messageLimit.classList.remove('active');
+                sendBtn.disabled = true;
+                attachBtn.disabled = true;
             } else {
                 messageInput.disabled = false;
                 messageInput.placeholder = "Type a message...";
-                messageLimit.style.color = "#A8A8A8";
+                messageLimit.classList.add('active');
+                sendBtn.disabled = false;
+                attachBtn.disabled = false;
             }
         }
         
@@ -1827,23 +1960,151 @@
             
             const timestamp = message.timestamp ? new Date(message.timestamp) : new Date();
             
+            // Get reactions for this message
+            const reactions = messageReactions[messageId] || {};
+            const reactionHTML = Object.keys(reactions).length > 0 ? 
+                `<div class="emoji-reactions">
+                    ${Object.entries(reactions).map(([emoji, users]) => 
+                        `<span class="emoji" data-emoji="${emoji}" data-message="${messageId}">${emoji} ${users.length}</span>`
+                    ).join('')}
+                </div>` : '';
+            
             messageContent += `
                 <div class="message-info">
                     <span>${formatTime(timestamp)}</span>
                     <span>${message.senderName}</span>
+                </div>
+                ${reactionHTML}
+                <div class="message-actions">
+                    <button class="action-btn react-btn" data-message-id="${messageId}">
+                        <i class="fas fa-smile"></i>
+                    </button>
+                    ${message.senderId === currentUser.uid ? `
+                        <button class="action-btn delete-btn" data-message-id="${messageId}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    ` : ''}
                 </div>
             `;
             
             messageDiv.innerHTML = messageContent;
             chatMessages.appendChild(messageDiv);
             
-            // Add event listener for image preview
+            // Add event listeners
             const messageImage = messageDiv.querySelector('.message-image');
+            const reactBtn = messageDiv.querySelector('.react-btn');
+            const deleteBtn = messageDiv.querySelector('.delete-btn');
+            const emojiElements = messageDiv.querySelectorAll('.emoji');
+            
             if (messageImage) {
                 messageImage.addEventListener('click', () => {
                     previewImage.src = messageImage.getAttribute('data-image');
                     imagePreview.classList.remove('hidden');
                 });
+            }
+            
+            if (reactBtn) {
+                reactBtn.addEventListener('click', () => {
+                    showReactionPicker(messageId);
+                });
+            }
+            
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to delete this message?')) {
+                        deleteMessage(messageId);
+                    }
+                });
+            }
+            
+            emojiElements.forEach(emoji => {
+                emoji.addEventListener('click', () => {
+                    const emojiChar = emoji.getAttribute('data-emoji');
+                    addReaction(messageId, emojiChar);
+                });
+            });
+        }
+        
+        // Show reaction picker
+        function showReactionPicker(messageId) {
+            const reactionPicker = document.createElement('div');
+            reactionPicker.className = 'emoji-picker show';
+            reactionPicker.style.position = 'absolute';
+            reactionPicker.style.bottom = '50px';
+            reactionPicker.style.right = '50px';
+            
+            emojis.forEach(emoji => {
+                const emojiOption = document.createElement('div');
+                emojiOption.className = 'emoji-option';
+                emojiOption.textContent = emoji;
+                emojiOption.addEventListener('click', () => {
+                    addReaction(messageId, emoji);
+                    document.body.removeChild(reactionPicker);
+                });
+                reactionPicker.appendChild(emojiOption);
+            });
+            
+            document.body.appendChild(reactionPicker);
+            
+            // Close reaction picker when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closePicker(e) {
+                    if (!reactionPicker.contains(e.target)) {
+                        document.body.removeChild(reactionPicker);
+                        document.removeEventListener('click', closePicker);
+                    }
+                });
+            }, 100);
+        }
+        
+        // Add reaction to a message
+        function addReaction(messageId, emoji) {
+            if (!messageReactions[messageId]) {
+                messageReactions[messageId] = {};
+            }
+            
+            if (!messageReactions[messageId][emoji]) {
+                messageReactions[messageId][emoji] = [];
+            }
+            
+            // Add current user to reaction if not already there
+            if (!messageReactions[messageId][emoji].includes(currentUser.uid)) {
+                messageReactions[messageId][emoji].push(currentUser.uid);
+            } else {
+                // Remove reaction if user already reacted
+                const index = messageReactions[messageId][emoji].indexOf(currentUser.uid);
+                if (index > -1) {
+                    messageReactions[messageId][emoji].splice(index, 1);
+                    
+                    // Remove emoji if no users left
+                    if (messageReactions[messageId][emoji].length === 0) {
+                        delete messageReactions[messageId][emoji];
+                    }
+                    
+                    // Remove message entry if no reactions left
+                    if (Object.keys(messageReactions[messageId]).length === 0) {
+                        delete messageReactions[messageId];
+                    }
+                }
+            }
+            
+            localStorage.setItem('kiddoChatReactions', JSON.stringify(messageReactions));
+            
+            // Reload messages to show updated reactions
+            if (currentChatUser) {
+                loadMessages(currentChatUser.id);
+            }
+        }
+        
+        // Delete a message
+        function deleteMessage(messageId) {
+            if (!currentChatUser) return;
+            
+            const chatId = getChatId(currentChatUser.id);
+            if (activeChats[chatId]) {
+                activeChats[chatId] = activeChats[chatId].filter(msg => msg.id !== messageId);
+                localStorage.setItem('kiddoChatActiveChats', JSON.stringify(activeChats));
+                loadMessages(currentChatUser.id);
             }
         }
         
