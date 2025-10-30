@@ -648,6 +648,30 @@
         }
 
         /* Profile Modal */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+
         .profile-form {
             display: flex;
             flex-direction: column;
@@ -848,7 +872,7 @@
                 <img id="chat-avatar" class="user-avatar" src="" alt="Contact Avatar">
                 <div>
                     <div id="chat-name">Select a chat</div>
-                    <div id="chat-status" style="font-size: 12px; color: var(--light-text);">Online</div>
+                    <div id="chat-status" style="font-size: 12px; color: #777;">Online</div>
                 </div>
             </div>
             <div class="messages-container" id="messages-container">
@@ -891,8 +915,8 @@
     </div>
 
     <!-- Profile Modal -->
-    <div id="profile-modal" class="modal">
-        <div class="modal-content">
+    <div id="profile-modal" class="profile-modal">
+        <div class="profile-modal-content">
             <h3 class="modal-title">Profile Settings</h3>
             <form class="profile-form" id="profile-form">
                 <img id="profile-avatar" class="profile-avatar" src="" alt="Profile Avatar">
@@ -1045,17 +1069,19 @@
         let contacts = [];
         let activeChats = {};
 
-        // Avatar Options by Gender (20 each)
+        // Avatar Options by Gender (20 each) - More unique avatars
         const maleAvatars = [
             'John', 'Michael', 'William', 'David', 'James', 'Robert', 'Richard', 'Joseph',
             'Thomas', 'Charles', 'Christopher', 'Daniel', 'Matthew', 'Anthony', 'Mark',
-            'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua'
+            'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kevin', 'Brian', 'George',
+            'Edward', 'Ronald', 'Timothy', 'Jason', 'Jeffrey', 'Ryan', 'Jacob'
         ];
         
         const femaleAvatars = [
             'Mary', 'Jennifer', 'Linda', 'Patricia', 'Elizabeth', 'Susan', 'Jessica', 'Sarah',
             'Karen', 'Nancy', 'Lisa', 'Betty', 'Margaret', 'Sandra', 'Ashley',
-            'Dorothy', 'Michelle', 'Carol', 'Amanda', 'Melissa'
+            'Dorothy', 'Michelle', 'Carol', 'Amanda', 'Melissa', 'Deborah', 'Stephanie',
+            'Rebecca', 'Laura', 'Sharon', 'Cynthia', 'Kathleen', 'Helen', 'Amy', 'Anna'
         ];
 
         // Emoji reactions
@@ -1185,7 +1211,7 @@
             
             // Close modals when clicking outside
             window.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal')) {
+                if (e.target.classList.contains('modal') || e.target.classList.contains('profile-modal')) {
                     e.target.style.display = 'none';
                     if (e.target.id === 'pin-modal') {
                         pinDigits.forEach(digit => digit.value = '');
@@ -1203,7 +1229,7 @@
             avatars.forEach(avatar => {
                 const avatarOption = document.createElement('div');
                 avatarOption.className = `avatar-option ${avatar === tempSelectedAvatar ? 'selected' : ''}`;
-                avatarOption.innerHTML = `<img src="https://api.dicebear.com/6.x/avataaars/svg?seed=${avatar}&backgroundColor=65c9ff,b6e3f4" alt="${avatar}">`;
+                avatarOption.innerHTML = `<img src="https://api.dicebear.com/6.x/avataaars/svg?seed=${avatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9" alt="${avatar}">`;
                 avatarOption.addEventListener('click', () => {
                     document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
                     avatarOption.classList.add('selected');
@@ -1216,7 +1242,7 @@
 
         // Update avatar preview image
         function updateAvatarPreview() {
-            const avatarUrl = `https://api.dicebear.com/6.x/avataaars/svg?seed=${selectedAvatar}&backgroundColor=65c9ff,b6e3f4`;
+            const avatarUrl = `https://api.dicebear.com/6.x/avataaars/svg?seed=${selectedAvatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9`;
             avatarPreviewImg.src = avatarUrl;
             
             if (profileModal.style.display === 'flex') {
@@ -1322,7 +1348,7 @@
                     if (userData) {
                         // Update UI with user data
                         userName.textContent = userData.name;
-                        userAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${userData.avatar}&backgroundColor=65c9ff,b6e3f4`;
+                        userAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${userData.avatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9`;
                         selectedAvatar = userData.avatar;
                         selectedGender = userData.gender;
                         
@@ -1330,8 +1356,8 @@
                         document.getElementById('profile-name').value = userData.name;
                         document.getElementById('profile-email').value = userData.email;
                         document.getElementById('profile-pin').value = userData.pin;
-                        document.getElementById('profile-avatar').src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${userData.avatar}&backgroundColor=65c9ff,b6e3f4`;
-                        profileAvatarPreview.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${userData.avatar}&backgroundColor=65c9ff,b6e3f4`;
+                        document.getElementById('profile-avatar').src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${userData.avatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9`;
+                        profileAvatarPreview.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${userData.avatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9`;
                         sharePin.textContent = userData.pin;
                         inviteLink.value = `${window.location.origin}?invite=${userData.inviteCode}`;
                         myInviteCode.value = userData.inviteCode;
@@ -1406,7 +1432,7 @@
             contactsList.innerHTML = '';
             
             if (contacts.length === 0) {
-                contactsList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--light-text);">No contacts found</div>';
+                contactsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #777;">No contacts found</div>';
                 return;
             }
             
@@ -1416,7 +1442,7 @@
                 contactElement.dataset.contactId = contact.id;
                 contactElement.innerHTML = `
                     <div class="contact-avatar">
-                        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.avatar}&backgroundColor=65c9ff,b6e3f4" alt="${contact.name}">
+                        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.avatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9" alt="${contact.name}">
                         <div class="${contact.isOnline ? 'online-status' : 'offline-status'}"></div>
                     </div>
                     <div class="contact-info">
@@ -1465,7 +1491,7 @@
             document.querySelector(`.contact[data-contact-id="${contact.id}"]`).classList.add('active');
             
             chatName.textContent = contact.name;
-            chatAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.avatar}&backgroundColor=65c9ff,b6e3f4`;
+            chatAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.avatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9`;
             chatStatus.textContent = contact.isOnline ? 'Online' : 'Offline';
             chatStatus.style.color = contact.isOnline ? "#4cd964" : "#777";
             
@@ -1706,7 +1732,7 @@
                 .then(() => {
                     // Update UI
                     userName.textContent = name;
-                    userAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${selectedAvatar}&backgroundColor=65c9ff,b6e3f4`;
+                    userAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${selectedAvatar}&backgroundColor=65c9ff,b6e3f4,c0aede,ffd5dc,d1d4f9`;
                     sharePin.textContent = pin;
                     
                     // Update password if provided
