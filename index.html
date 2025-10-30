@@ -5,33 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiddo Chat App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
     <style>
+        /* CSS পরিবর্তন এবং ফিক্স */
         :root {
-            --primary-color: #0088cc;
-            --secondary-color: #f0f0f0;
-            --accent-color: #25d366;
-            --text-color: #333;
-            --light-text: #777;
-            --error-color: #ff3b30;
+            --primary-color: #007bff; /* আধুনিক নীল */
+            --secondary-color: #f0f2f5; /* চ্যাট ব্যাকগ্রাউন্ড */
+            --accent-color: #25d366; /* সাফল্য/অনলাইন */
+            --text-color: #1c1e21; /* গাঢ় টেক্সট */
+            --light-text: #606770; /* হালকা টেক্সট */
+            --error-color: #fa383e;
             --success-color: #4cd964;
-            --border-radius: 10px;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px; /* সামান্য বেশি রাউন্ডেড */
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* উন্নত শ্যাডো */
+            --chat-bubble-radius: 18px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #f5f5f5;
+            background-color: var(--secondary-color);
             color: var(--text-color);
             height: 100vh;
             display: flex;
@@ -110,12 +113,13 @@
             display: flex;
             height: 100vh;
             width: 100%;
+            padding-top: 0;
         }
 
         /* Mobile Header */
         .mobile-header {
             display: none;
-            padding: 15px;
+            padding: 0 15px;
             background-color: var(--primary-color);
             color: white;
             justify-content: space-between;
@@ -210,7 +214,7 @@
 
         .gender-option.selected {
             border-color: var(--primary-color);
-            background-color: rgba(0, 136, 204, 0.1);
+            background-color: rgba(0, 123, 255, 0.1);
         }
 
         .avatar-preview {
@@ -243,7 +247,7 @@
         }
 
         .btn-primary:hover {
-            background-color: #0077b3;
+            background-color: #0069d9;
         }
 
         .btn-secondary {
@@ -328,25 +332,31 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
+            transition: transform 0.3s ease-in-out;
+            z-index: 10;
         }
 
         .chat-area {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background-color: white;
+            background-color: var(--secondary-color);
             position: relative;
+            transition: transform 0.3s ease-in-out;
+            z-index: 20;
         }
 
-        /* Header */
-        .header {
+        /* Header (Sidebar & Chat Area) */
+        .header, .messages-header {
             padding: 15px;
-            background-color: var(--primary-color);
-            color: white;
+            background-color: white;
+            color: var(--text-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
 
         .user-info {
@@ -359,6 +369,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            object-fit: cover;
         }
 
         .header-actions {
@@ -369,6 +380,7 @@
         .header-actions i {
             font-size: 20px;
             cursor: pointer;
+            color: var(--primary-color);
         }
 
         /* Contacts List */
@@ -392,18 +404,20 @@
             border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
             transition: background-color 0.2s;
             position: relative;
         }
 
         .contact:hover {
-            background-color: var(--secondary-color);
+            background-color: #f7f7f7;
         }
 
         .contact.active {
             background-color: #e6f7ff;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 12px;
         }
 
         .contact-avatar {
@@ -464,28 +478,28 @@
             align-items: center;
             gap: 10px;
             flex-shrink: 0;
+            background-color: white;
+            color: var(--text-color);
         }
 
         .messages-container {
             flex: 1;
-            padding: 15px;
+            padding: 20px 15px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            background-color: #f8f9fa;
+            background-color: var(--secondary-color);
         }
 
         .message {
-            max-width: 85%;
-            padding: 10px 15px;
-            border-radius: 18px;
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: var(--chat-bubble-radius);
             position: relative;
             user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             word-wrap: break-word;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
         }
 
         .message.sent {
@@ -498,7 +512,8 @@
         .message.received {
             align-self: flex-start;
             background-color: white;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #e9e9e9;
+            color: var(--text-color);
             border-bottom-left-radius: 5px;
         }
 
@@ -542,7 +557,7 @@
         }
 
         .message.selected {
-            background-color: rgba(0, 136, 204, 0.2);
+            background-color: rgba(0, 123, 255, 0.2);
         }
 
         .system-message {
@@ -617,30 +632,34 @@
 
         /* Message Input */
         .message-input-container {
-            padding: 15px;
+            padding: 10px 15px;
             border-top: 1px solid #ddd;
             display: flex;
             gap: 10px;
             align-items: flex-end;
             background: white;
             flex-shrink: 0;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
         }
 
         .message-input-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
+            background: #f0f2f5;
+            border-radius: 24px;
+            padding: 5px 15px;
         }
 
         .message-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
+            padding: 8px 0;
+            border: none;
+            background: transparent;
             font-size: 16px;
             resize: none;
-            min-height: 45px;
-            max-height: 120px;
+            min-height: 25px;
+            max-height: 100px;
             font-family: inherit;
             outline: none;
         }
@@ -650,29 +669,26 @@
         }
 
         .input-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            justify-content: center;
+            display: none;
         }
-
-        .input-action {
-            width: 35px;
-            height: 35px;
+        
+        .message-input-container .input-action {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            color: var(--light-text);
+            color: var(--primary-color);
             transition: all 0.2s;
             border: none;
             background: none;
+            flex-shrink: 0;
         }
 
-        .input-action:hover {
+        .message-input-container .input-action:hover {
             background-color: var(--secondary-color);
-            color: var(--primary-color);
         }
 
         .send-btn {
@@ -687,11 +703,11 @@
             align-items: center;
             cursor: pointer;
             flex-shrink: 0;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
         .send-btn:hover {
-            background-color: #0077b3;
+            background-color: #0069d9;
         }
 
         .send-btn:active {
@@ -864,55 +880,61 @@
             border: none;
         }
 
-        /* Responsive */
+        /* Responsive Fixes */
         @media (max-width: 768px) {
             .mobile-header {
                 display: flex;
             }
             
+            .container {
+                flex-direction: column;
+                padding-top: 60px;
+            }
+
             .sidebar {
                 width: 100%;
                 max-width: none;
                 position: absolute;
-                top: 60px;
+                top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 z-index: 10;
+                transform: translateX(0);
+                height: 100%;
             }
             
             .chat-area {
-                display: none;
+                width: 100%;
                 position: absolute;
-                top: 60px;
+                top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 z-index: 20;
-            }
-            
-            .chat-area.active {
+                transform: translateX(100%);
                 display: flex;
+                height: 100%;
             }
             
-            .header {
-                padding-top: 25px;
+            .sidebar.inactive {
+                transform: translateX(-100%);
             }
-            
-            .avatar-grid {
-                grid-template-columns: repeat(3, 1fr);
+
+            .chat-area.active {
+                transform: translateX(0);
             }
-            
+
+            .messages-header {
+                padding-left: 60px; /* মোবাইল ব্যাক বাটন স্পেসের জন্য */
+            }
+
             .message {
                 max-width: 90%;
             }
             
             .message-input-container {
-                padding-bottom: calc(15px + env(safe-area-inset-bottom));
-            }
-            
-            .contacts-list {
-                padding-bottom: 20px;
+                padding-bottom: calc(10px + env(safe-area-inset-bottom));
             }
         }
 
@@ -920,11 +942,16 @@
             .mobile-header {
                 display: none;
             }
+            .sidebar.inactive {
+                transform: translateX(0); /* ডেস্কটপে সবসময় দৃশ্যমান */
+            }
+            .chat-area.active {
+                transform: translateX(0); /* ডেস্কটপে সবসময় দৃশ্যমান */
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Splash Screen -->
     <div id="splash-screen">
         <div class="splash-logo">
             <i class="fas fa-comments"></i>
@@ -936,7 +963,6 @@
         </div>
     </div>
 
-    <!-- Mobile Header -->
     <div class="mobile-header">
         <button class="back-button" id="mobile-back-button" style="display: none;">
             <i class="fas fa-arrow-left"></i>
@@ -947,7 +973,6 @@
         </div>
     </div>
 
-    <!-- Authentication Screens -->
     <div id="auth-container" class="auth-container" style="display: none;">
         <div class="auth-box">
             <h2 id="auth-title" class="auth-title">Create Account</h2>
@@ -990,13 +1015,11 @@
         </div>
     </div>
 
-    <!-- Avatar Selection Modal -->
     <div id="avatar-modal" class="avatar-modal">
         <div class="avatar-modal-content">
             <h3 class="modal-title">Select Your Avatar</h3>
             <div class="avatar-grid" id="avatar-grid">
-                <!-- Avatars will be populated by JavaScript -->
-            </div>
+                </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
                 <button class="btn btn-secondary" id="close-avatar-modal">Cancel</button>
                 <button class="btn btn-primary" id="confirm-avatar">Select</button>
@@ -1004,9 +1027,7 @@
         </div>
     </div>
 
-    <!-- Main App Container -->
     <div id="app-container" class="container" style="display: none;">
-        <!-- Sidebar with Contacts -->
         <div class="sidebar">
             <div class="header">
                 <div class="user-info">
@@ -1023,11 +1044,9 @@
                 <i class="fas fa-edit" id="new-chat-button"></i>
             </div>
             <div class="contacts-list" id="contacts-list">
-                <!-- Contacts will be populated by JavaScript -->
-            </div>
+                </div>
         </div>
 
-        <!-- Chat Area -->
         <div class="chat-area">
             <div class="messages-header">
                 <img id="chat-avatar" class="user-avatar" src="" alt="Contact Avatar">
@@ -1035,18 +1054,18 @@
                     <div id="chat-name">Select a chat</div>
                     <div id="chat-status" style="font-size: 12px; color: #777;">Online</div>
                 </div>
+                <div class="header-actions">
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
             </div>
             <div class="messages-container" id="messages-container">
-                <!-- Messages will be populated by JavaScript -->
-            </div>
+                </div>
             <div class="message-input-container">
+                <button class="input-action" id="image-upload-btn" title="Send Image">
+                    <i class="fas fa-image"></i>
+                </button>
                 <div class="message-input-wrapper">
                     <textarea class="message-input" id="message-input" placeholder="Type a message..." rows="1"></textarea>
-                    <div class="input-actions">
-                        <button class="input-action" id="image-upload-btn" title="Send Image">
-                            <i class="fas fa-image"></i>
-                        </button>
-                    </div>
                 </div>
                 <button class="send-btn" id="send-button">
                     <i class="fas fa-paper-plane"></i>
@@ -1055,7 +1074,6 @@
         </div>
     </div>
 
-    <!-- Message Actions Menu -->
     <div id="message-actions-menu" class="message-actions-menu">
         <button class="message-action-item" data-action="reply">
             <i class="fas fa-reply"></i>
@@ -1079,7 +1097,6 @@
         </div>
     </div>
 
-    <!-- PIN Modal -->
     <div id="pin-modal" class="modal">
         <div class="modal-content">
             <h3 class="modal-title">Enter PIN</h3>
@@ -1098,7 +1115,6 @@
         </div>
     </div>
 
-    <!-- Profile Modal -->
     <div id="profile-modal" class="profile-modal">
         <div class="profile-modal-content">
             <h3 class="modal-title">Profile Settings</h3>
@@ -1142,7 +1158,6 @@
         </div>
     </div>
 
-    <!-- New Chat Modal -->
     <div id="new-chat-modal" class="modal">
         <div class="modal-content">
             <h3 class="modal-title">New Chat</h3>
@@ -1165,7 +1180,6 @@
         </div>
     </div>
 
-    <!-- Image Preview Modal -->
     <div id="image-modal" class="image-modal">
         <button class="close-image-modal">&times;</button>
         <div class="image-modal-content">
@@ -1173,7 +1187,6 @@
         </div>
     </div>
 
-    <!-- Hidden file input for image upload -->
     <input type="file" id="image-upload" accept="image/*" style="display: none;">
 
     <script>
@@ -1245,6 +1258,8 @@
         const inviteLink = document.getElementById('invite-link');
         const sharePin = document.getElementById('share-pin');
         const myInviteCode = document.getElementById('my-invite-code');
+        const sidebar = document.querySelector('.sidebar');
+        const chatArea = document.querySelector('.chat-area');
 
         // App State
         let currentUser = null;
@@ -1281,14 +1296,23 @@
             checkMobileView();
         }
 
-        // Check and setup mobile view
+        // Check and setup mobile view - সংশোধিত
         function checkMobileView() {
             isMobile = window.innerWidth <= 768;
             if (isMobile) {
-                document.querySelector('.sidebar').style.display = 'flex';
-                document.querySelector('.chat-area').style.display = 'none';
+                // মোবাইল মোডে ডিফল্টভাবে কন্টাক্টস দেখাও
+                sidebar.style.transform = 'translateX(0)';
+                chatArea.style.transform = 'translateX(100%)';
+                chatArea.classList.remove('active');
+                sidebar.classList.remove('inactive');
                 mobileBackButton.style.display = 'none';
                 mobileTitle.textContent = 'Kiddo Chat';
+            } else {
+                 // ডেস্কটপ মোডে উভয় প্যানেল দেখাও
+                sidebar.style.transform = 'translateX(0)';
+                chatArea.style.transform = 'translateX(0)';
+                chatArea.classList.remove('active');
+                sidebar.classList.remove('inactive');
             }
         }
 
@@ -1384,7 +1408,7 @@
                 imageModal.style.display = 'none';
             });
             
-            // Send message - FIXED
+            // Send message
             sendButton.addEventListener('click', sendMessage);
             messageInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -1393,7 +1417,7 @@
                 }
             });
             
-            // Message input focus - FIXED: Don't go back to contacts when clicking message input
+            // Message input focus
             messageInput.addEventListener('focus', (e) => {
                 e.stopPropagation();
             });
@@ -1478,23 +1502,22 @@
             window.addEventListener('resize', checkMobileView);
         }
 
-        // Show contacts view (mobile)
+        // Show contacts view (mobile) - সংশোধিত
         function showContactsView() {
             if (isMobile) {
-                document.querySelector('.sidebar').style.display = 'flex';
-                document.querySelector('.chat-area').style.display = 'none';
+                sidebar.classList.remove('inactive');
+                chatArea.classList.remove('active');
                 mobileBackButton.style.display = 'none';
                 mobileTitle.textContent = 'Kiddo Chat';
                 selectedContact = null;
             }
         }
 
-        // Show chat view (mobile)
+        // Show chat view (mobile) - সংশোধিত
         function showChatView() {
             if (isMobile) {
-                document.querySelector('.sidebar').style.display = 'none';
-                document.querySelector('.chat-area').style.display = 'flex';
-                document.querySelector('.chat-area').classList.add('active');
+                sidebar.classList.add('inactive');
+                chatArea.classList.add('active');
                 mobileBackButton.style.display = 'flex';
                 mobileTitle.textContent = selectedContact ? selectedContact.name : 'Chat';
             }
@@ -2029,7 +2052,7 @@
             reader.readAsDataURL(file);
         }
 
-        // Send a message - FIXED
+        // Send a message
         function sendMessage() {
             const messageText = messageInput.value.trim();
             if (!messageText || !selectedContact) {
