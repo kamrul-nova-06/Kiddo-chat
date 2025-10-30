@@ -1467,7 +1467,7 @@
             chatName.textContent = contact.name;
             chatAvatar.src = `https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.avatar}&backgroundColor=65c9ff,b6e3f4`;
             chatStatus.textContent = contact.isOnline ? 'Online' : 'Offline';
-            chatStatus.style.color = contact.isOnline ? var(--success-color) : var(--light-text);
+            chatStatus.style.color = contact.isOnline ? "#4cd964" : "#777";
             
             // Check if we need PIN verification for this contact
             if (!activeChats[contact.id]) {
