@@ -35,6 +35,10 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -124,7 +128,7 @@
 
         /* Auth Screens */
         .auth-container {
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -411,7 +415,7 @@
 
         /* Main App Layout */
         .app-container {
-            display: flex;
+            display: none;
             height: 100vh;
             width: 100%;
         }
@@ -750,6 +754,10 @@
             word-wrap: break-word;
             animation: messageAppear 0.3s ease-out;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         @keyframes messageAppear {
@@ -781,6 +789,16 @@
         .message-content {
             margin-bottom: 4px;
             line-height: 1.4;
+        }
+
+        .message-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-top: 5px;
+            cursor: pointer;
+            object-fit: cover;
+            display: block;
         }
 
         .message-time {
@@ -872,6 +890,30 @@
             outline: none;
         }
 
+        .input-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .input-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--primary);
+            transition: var(--transition);
+            border: none;
+            background: none;
+        }
+
+        .input-action:hover {
+            background-color: rgba(126, 87, 194, 0.1);
+        }
+
         .send-btn {
             width: 48px;
             height: 48px;
@@ -894,6 +936,68 @@
 
         .send-btn:active {
             transform: scale(0.95);
+        }
+
+        /* Message Actions Menu */
+        .message-actions-menu {
+            position: fixed;
+            background: var(--surface);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-lg);
+            padding: 8px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 160px;
+            animation: modalAppear 0.2s ease-out;
+        }
+
+        .message-action-item {
+            padding: 10px 12px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 14px;
+            color: var(--on-surface);
+        }
+
+        .message-action-item:hover {
+            background-color: #F5F5F5;
+        }
+
+        .reaction-picker {
+            display: flex;
+            gap: 5px;
+            padding: 8px;
+            background: var(--surface);
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .reaction-emoji {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            border: none;
+            background: none;
+        }
+
+        .reaction-emoji:hover {
+            transform: scale(1.2);
+            background-color: var(--background);
         }
 
         /* PIN Modal */
@@ -950,6 +1054,53 @@
             text-align: center;
             margin-top: 12px;
             display: none;
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .image-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        .close-image-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .close-image-modal:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         /* Responsive Design */
@@ -1050,7 +1201,7 @@
     </div>
 
     <!-- Auth Container -->
-    <div id="auth-container" class="auth-container" style="display: none;">
+    <div id="auth-container" class="auth-container">
         <div class="auth-box">
             <div class="auth-header">
                 <h2 id="auth-title" class="auth-title">Create Account</h2>
@@ -1123,7 +1274,7 @@
     </div>
 
     <!-- Main App Container -->
-    <div id="app-container" class="app-container" style="display: none;">
+    <div id="app-container" class="app-container">
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -1181,13 +1332,48 @@
                 </div>
             </div>
             <div class="message-input-container">
+                <button class="input-action" id="image-upload-btn" title="Send Image">
+                    <i class="fas fa-image"></i>
+                </button>
                 <div class="message-input-wrapper">
                     <textarea class="message-input" id="message-input" placeholder="Type a message..." rows="1"></textarea>
+                    <div class="input-actions">
+                        <button class="input-action" title="Emoji">
+                            <i class="fas fa-smile"></i>
+                        </button>
+                        <button class="input-action" title="Attachment">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                    </div>
                 </div>
                 <button class="send-btn" id="send-button">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Message Actions Menu -->
+    <div id="message-actions-menu" class="message-actions-menu">
+        <button class="message-action-item" data-action="reply">
+            <i class="fas fa-reply"></i>
+            <span>Reply</span>
+        </button>
+        <button class="message-action-item" data-action="edit">
+            <i class="fas fa-edit"></i>
+            <span>Edit</span>
+        </button>
+        <button class="message-action-item" data-action="delete">
+            <i class="fas fa-trash"></i>
+            <span>Delete</span>
+        </button>
+        <div class="reaction-picker">
+            <button class="reaction-emoji" data-emoji="👍">👍</button>
+            <button class="reaction-emoji" data-emoji="❤️">❤️</button>
+            <button class="reaction-emoji" data-emoji="😂">😂</button>
+            <button class="reaction-emoji" data-emoji="😮">😮</button>
+            <button class="reaction-emoji" data-emoji="😢">😢</button>
+            <button class="reaction-emoji" data-emoji="😡">😡</button>
         </div>
     </div>
 
@@ -1215,6 +1401,19 @@
             </div>
         </div>
     </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="image-modal">
+        <button class="close-image-modal" id="close-image-modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="image-modal-content">
+            <img id="modal-image" src="" alt="Full size image">
+        </div>
+    </div>
+
+    <!-- Hidden file input for image upload -->
+    <input type="file" id="image-upload" accept="image/*" style="display: none;">
 
     <script>
         // Firebase configuration
@@ -1264,6 +1463,11 @@
         const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
+        const imageUploadBtn = document.getElementById('image-upload-btn');
+        const imageUpload = document.getElementById('image-upload');
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeImageModal = document.getElementById('close-image-modal');
         const userAvatar = document.getElementById('user-avatar');
         const userName = document.getElementById('user-name');
         const userStatus = document.getElementById('user-status');
@@ -1277,6 +1481,7 @@
         const pinError = document.getElementById('pin-error');
         const cancelPin = document.getElementById('cancel-pin');
         const confirmPin = document.getElementById('confirm-pin');
+        const messageActionsMenu = document.getElementById('message-actions-menu');
 
         // App State
         let currentUser = null;
@@ -1284,8 +1489,13 @@
         let selectedAvatar = 'https://api.dicebear.com/6.x/avataaars/svg?seed=Ahmed&style=Circle&accessories=Round&head=Full&clothing=ShirtCrewNeck&clothingColor=65c9ff&skinColor=f8d25c&facialHair=BeardLight&top=ShortHairShortFlat';
         let selectedContact = null;
         let selectedGender = 'male';
+        let selectedMessage = null;
         let contacts = [];
         let messages = {};
+
+        // Sound effects
+        const messageSound = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+        const receiveSound = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
 
         // Muslim avatar options
         const muslimAvatars = {
@@ -1301,7 +1511,11 @@
 
         // Initialize the app
         function initApp() {
-            // Hide splash screen after 3 seconds
+            // Set up event listeners
+            setupEventListeners();
+            generateAvatarOptions();
+            
+            // Check auth state after splash screen
             setTimeout(() => {
                 splashScreen.style.opacity = '0';
                 setTimeout(() => {
@@ -1309,10 +1523,6 @@
                     checkAuthState();
                 }, 500);
             }, 3000);
-
-            // Set up event listeners
-            setupEventListeners();
-            generateAvatarOptions();
         }
 
         // Set up all event listeners
@@ -1355,6 +1565,11 @@
                 }
             });
             
+            // Image upload
+            imageUploadBtn.addEventListener('click', () => imageUpload.click());
+            imageUpload.addEventListener('change', handleImageUpload);
+            closeImageModal.addEventListener('click', () => imageModal.style.display = 'none');
+            
             // PIN modal
             pinDigits.forEach((digit, index) => {
                 digit.addEventListener('input', (e) => {
@@ -1374,6 +1589,29 @@
             
             cancelPin.addEventListener('click', () => pinModal.style.display = 'none');
             confirmPin.addEventListener('click', handlePinConfirm);
+            
+            // Message actions
+            document.querySelectorAll('.message-action-item').forEach(item => {
+                item.addEventListener('click', handleMessageAction);
+            });
+            
+            document.querySelectorAll('.reaction-emoji').forEach(emoji => {
+                emoji.addEventListener('click', handleReaction);
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+                if (!e.target.closest('.message-actions-menu') && messageActionsMenu.style.display === 'flex') {
+                    messageActionsMenu.style.display = 'none';
+                    if (selectedMessage) {
+                        selectedMessage.classList.remove('selected');
+                        selectedMessage = null;
+                    }
+                }
+            });
         }
 
         // Generate avatar options based on gender
@@ -1385,6 +1623,9 @@
                 const avatarUrl = `https://api.dicebear.com/6.x/avataaars/svg?seed=${name}&style=Circle&accessories=Round&head=Full&clothing=ShirtCrewNeck&clothingColor=65c9ff&skinColor=f8d25c&facialHair=${selectedGender === 'male' ? 'BeardLight' : ''}&top=${selectedGender === 'male' ? 'ShortHairShortFlat' : 'LongHairBob'}`;
                 const avatarOption = document.createElement('div');
                 avatarOption.className = 'avatar-option';
+                if (avatarUrl === selectedAvatar) {
+                    avatarOption.classList.add('selected');
+                }
                 avatarOption.innerHTML = `<img src="${avatarUrl}" alt="Avatar ${name}">`;
                 avatarOption.addEventListener('click', () => {
                     document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
@@ -1517,6 +1758,8 @@
                     if (userData) {
                         userName.textContent = userData.name;
                         userAvatar.src = userData.avatar;
+                        selectedAvatar = userData.avatar;
+                        selectedGender = userData.gender;
                     }
                 });
         }
@@ -1632,12 +1875,143 @@
             messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
             messageDiv.dataset.messageId = message.id;
             
+            let messageContent = '';
+            if (message.type === 'text') {
+                messageContent = `<div class="message-content">${message.content}</div>`;
+            } else if (message.type === 'image') {
+                messageContent = `
+                    <div class="message-content">
+                        <img src="${message.content}" alt="Sent image" class="message-image">
+                    </div>
+                `;
+            }
+            
             messageDiv.innerHTML = `
-                <div class="message-content">${message.content}</div>
+                ${messageContent}
                 <div class="message-time">${formatTime(message.timestamp)}</div>
             `;
             
+            // Add context menu for messages
+            messageDiv.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showMessageActions(e, messageDiv, message);
+            });
+            
+            // Add long press for mobile
+            let pressTimer;
+            messageDiv.addEventListener('touchstart', (e) => {
+                pressTimer = setTimeout(() => {
+                    showMessageActions(e, messageDiv, message);
+                }, 500);
+            });
+            
+            messageDiv.addEventListener('touchend', () => {
+                clearTimeout(pressTimer);
+            });
+            
+            // Add click handler for images
+            if (message.type === 'image') {
+                const img = messageDiv.querySelector('.message-image');
+                img.addEventListener('click', () => {
+                    modalImage.src = message.content;
+                    imageModal.style.display = 'flex';
+                });
+            }
+            
             return messageDiv;
+        }
+
+        // Show message actions menu
+        function showMessageActions(e, messageElement, message) {
+            selectedMessage = message;
+            
+            // Hide previous menu
+            messageActionsMenu.style.display = 'none';
+            
+            // Remove previous selection
+            if (selectedMessage) {
+                document.querySelectorAll('.message').forEach(msg => msg.classList.remove('selected'));
+            }
+            
+            // Select current message
+            messageElement.classList.add('selected');
+            
+            // Position menu
+            const menuWidth = messageActionsMenu.offsetWidth;
+            const menuHeight = messageActionsMenu.offsetHeight;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Adjust position to keep menu within viewport
+            let x = e.clientX || e.touches[0].clientX;
+            let y = e.clientY || e.touches[0].clientY;
+            
+            let adjustedX = x;
+            let adjustedY = y;
+            
+            if (x + menuWidth > windowWidth) {
+                adjustedX = windowWidth - menuWidth - 10;
+            }
+            if (y + menuHeight > windowHeight) {
+                adjustedY = windowHeight - menuHeight - 10;
+            }
+            
+            messageActionsMenu.style.left = adjustedX + 'px';
+            messageActionsMenu.style.top = adjustedY + 'px';
+            messageActionsMenu.style.display = 'flex';
+        }
+
+        // Handle message action
+        function handleMessageAction(e) {
+            const action = e.currentTarget.dataset.action;
+            
+            switch(action) {
+                case 'reply':
+                    const messageText = selectedMessage.content;
+                    messageInput.value = `Replying to: ${messageText}\n`;
+                    messageInput.focus();
+                    break;
+                    
+                case 'edit':
+                    if (selectedMessage.senderId === currentUser.uid) {
+                        const currentText = selectedMessage.content;
+                        const newText = prompt('Edit your message:', currentText);
+                        if (newText && newText !== currentText) {
+                            // Update message in database
+                            const chatId = [currentUser.uid, selectedContact.id].sort().join('_');
+                            database.ref('chats/' + chatId + '/' + selectedMessage.id).update({
+                                content: newText
+                            });
+                        }
+                    } else {
+                        alert('You can only edit your own messages');
+                    }
+                    break;
+                    
+                case 'delete':
+                    if (selectedMessage.senderId === currentUser.uid) {
+                        if (confirm('Are you sure you want to delete this message?')) {
+                            const chatId = [currentUser.uid, selectedContact.id].sort().join('_');
+                            database.ref('chats/' + chatId + '/' + selectedMessage.id).remove();
+                        }
+                    } else {
+                        alert('You can only delete your own messages');
+                    }
+                    break;
+            }
+            
+            messageActionsMenu.style.display = 'none';
+            document.querySelectorAll('.message').forEach(msg => msg.classList.remove('selected'));
+            selectedMessage = null;
+        }
+
+        // Handle reaction
+        function handleReaction(e) {
+            const emoji = e.currentTarget.dataset.emoji;
+            // Add reaction logic here
+            messageActionsMenu.style.display = 'none';
+            document.querySelectorAll('.message').forEach(msg => msg.classList.remove('selected'));
+            selectedMessage = null;
         }
 
         // Send a message
@@ -1666,10 +2040,56 @@
                 .then(() => {
                     messageInput.value = '';
                     adjustTextareaHeight();
+                    playMessageSound();
                 })
                 .catch(error => {
                     console.error('Error sending message:', error);
                 });
+        }
+
+        // Handle image upload
+        function handleImageUpload(e) {
+            if (!selectedContact) {
+                alert('Please select a contact first');
+                return;
+            }
+            
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image size should be less than 5MB');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const imageData = event.target.result;
+                
+                const chatId = [currentUser.uid, selectedContact.id].sort().join('_');
+                const messageId = database.ref().child('chats/' + chatId).push().key;
+                const timestamp = Date.now();
+                
+                const message = {
+                    id: messageId,
+                    senderId: currentUser.uid,
+                    content: imageData,
+                    type: 'image',
+                    timestamp: timestamp
+                };
+                
+                database.ref('chats/' + chatId + '/' + messageId).set(message)
+                    .then(() => {
+                        playMessageSound();
+                    })
+                    .catch(error => {
+                        console.error('Error sending image:', error);
+                    });
+            };
+            
+            reader.readAsDataURL(file);
+            e.target.value = '';
         }
 
         // Show PIN modal for new chat
@@ -1752,6 +2172,11 @@
         function formatTime(timestamp) {
             const date = new Date(timestamp);
             return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Play message sound
+        function playMessageSound() {
+            messageSound.play().catch(e => console.log('Audio play failed:', e));
         }
 
         // Adjust textarea height based on content
