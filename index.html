@@ -208,6 +208,7 @@
             border: 3px solid var(--primary-color);
             cursor: pointer;
             transition: transform 0.3s;
+            object-fit: cover;
         }
 
         .avatar-preview-img:hover {
@@ -1208,22 +1209,31 @@
                     return;
                 }
                 
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        // Save user data to database
-                        return database.ref('users/' + userCredential.user.uid).set({
-                            name: name,
-                            email: email,
-                            pin: pin,
-                            avatar: selectedAvatar,
-                            gender: selectedGender
-                        });
-                    })
-                    .then(() => {
-                        console.log('User created successfully');
-                    })
-                    .catch((error) => {
-                        alert('Sign up failed: ' + error.message);
+                // Check if PIN is already in use
+                database.ref('users').orderByChild('pin').equalTo(pin).once('value')
+                    .then(snapshot => {
+                        if (snapshot.exists()) {
+                            alert('This PIN is already in use. Please choose a different PIN.');
+                        } else {
+                            // Create user with unique PIN
+                            auth.createUserWithEmailAndPassword(email, password)
+                                .then((userCredential) => {
+                                    // Save user data to database
+                                    return database.ref('users/' + userCredential.user.uid).set({
+                                        name: name,
+                                        email: email,
+                                        pin: pin,
+                                        avatar: selectedAvatar,
+                                        gender: selectedGender
+                                    });
+                                })
+                                .then(() => {
+                                    console.log('User created successfully');
+                                })
+                                .catch((error) => {
+                                    alert('Sign up failed: ' + error.message);
+                                });
+                        }
                     });
             }
         }
