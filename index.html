@@ -3,40 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiddo Chat App</title>
+    <title>Kiddo Chat - Connect with Friends</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
     <style>
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #f0f2f5;
-            --accent-color: #25d366;
-            --text-color: #1c1e21;
-            --light-text: #606770;
-            --error-color: #fa383e;
-            --success-color: #4cd964;
-            --border-radius: 12px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --chat-bubble-radius: 18px;
+            --primary: #7E57C2;
+            --primary-light: #B39DDB;
+            --primary-dark: #5E35B1;
+            --secondary: #26A69A;
+            --background: #F5F7FA;
+            --surface: #FFFFFF;
+            --on-surface: #212121;
+            --on-surface-light: #757575;
+            --error: #FF5252;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --border-radius: 16px;
+            --border-radius-sm: 8px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
+            background-color: var(--background);
+            color: var(--on-surface);
             height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
         }
 
@@ -47,7 +51,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary-color), #005f8c);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -59,45 +63,49 @@
         .splash-logo {
             width: 120px;
             height: 120px;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s infinite;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            animation: logoFloat 3s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .splash-logo i {
-            font-size: 60px;
-            color: var(--primary-color);
+            font-size: 50px;
+            color: var(--primary);
         }
 
         .splash-text {
             color: white;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
         .splash-subtext {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 16px;
+            font-weight: 400;
+        }
+
+        .loading-container {
+            width: 200px;
+            margin-top: 40px;
         }
 
         .loading-bar {
-            width: 200px;
+            width: 100%;
             height: 4px;
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 2px;
-            margin-top: 30px;
             overflow: hidden;
         }
 
@@ -106,7 +114,7 @@
             width: 0%;
             background-color: white;
             border-radius: 2px;
-            animation: loading 2s ease-in-out forwards;
+            animation: loading 2.5s ease-in-out forwards;
         }
 
         @keyframes loading {
@@ -122,107 +130,153 @@
             align-items: center;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, var(--primary-color), #005f8c);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             padding: 20px;
         }
 
         .auth-box {
-            background: white;
+            background: var(--surface);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
+            box-shadow: var(--shadow-lg);
+            padding: 32px;
             width: 100%;
-            max-width: 380px;
+            max-width: 420px;
             max-height: 90vh;
             overflow-y: auto;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 28px;
         }
 
         .auth-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-size: 24px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            color: var(--on-surface-light);
+            font-size: 16px;
         }
 
         .auth-form {
             display: flex;
             flex-direction: column;
+            gap: 20px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
             font-size: 14px;
+            color: var(--on-surface);
         }
 
-        .form-group input {
+        .form-input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
+            padding: 14px 16px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: var(--border-radius-sm);
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: var(--transition);
+            background-color: #FAFAFA;
         }
 
-        .form-group input:focus {
-            border-color: var(--primary-color);
+        .form-input:focus {
+            border-color: var(--primary);
             outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
         }
 
         .gender-selection {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-top: 5px;
         }
 
         .gender-option {
             flex: 1;
             text-align: center;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: var(--border-radius);
+            padding: 12px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
+            background-color: #FAFAFA;
+            font-weight: 500;
         }
 
         .gender-option.selected {
-            border-color: var(--primary-color);
-            background-color: rgba(0, 123, 255, 0.1);
+            border-color: var(--primary);
+            background-color: rgba(126, 87, 194, 0.08);
+            color: var(--primary);
+        }
+
+        .avatar-section {
+            text-align: center;
+            margin: 10px 0;
         }
 
         .avatar-preview {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .avatar-preview-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            margin: 0 auto;
-            border: 3px solid var(--primary-color);
+            margin: 0 auto 16px;
+            border: 3px solid var(--primary);
             cursor: pointer;
-            transition: transform 0.3s;
-            object-fit: cover;
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .avatar-preview-img:hover {
+        .avatar-preview:hover {
             transform: scale(1.05);
         }
 
+        .avatar-preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-change-text {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
         .btn {
-            padding: 12px;
+            padding: 14px 20px;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-sm);
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -230,38 +284,45 @@
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
         }
 
         .btn-primary:hover {
-            background-color: #0069d9;
+            background-color: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(126, 87, 194, 0.3);
         }
 
         .btn-secondary {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
+            background-color: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
         }
 
         .btn-secondary:hover {
-            background-color: #e0e0e0;
+            background-color: rgba(126, 87, 194, 0.05);
         }
 
         .auth-switch {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 24px;
         }
 
-        .auth-switch a {
-            color: var(--primary-color);
+        .auth-switch-text {
+            color: var(--on-surface-light);
+            font-size: 14px;
+        }
+
+        .auth-switch-link {
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            margin-left: 4px;
         }
 
         /* Avatar Selection Modal */
-        .avatar-modal {
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -272,23 +333,46 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(4px);
         }
 
-        .avatar-modal-content {
-            background-color: white;
+        .modal-content {
+            background-color: var(--surface);
             border-radius: var(--border-radius);
-            padding: 25px;
+            padding: 24px;
             width: 90%;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--on-surface);
         }
 
         .avatar-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            gap: 12px;
             margin: 20px 0;
         }
 
@@ -298,12 +382,13 @@
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
-            transition: all 0.3s;
+            transition: var(--transition);
             overflow: hidden;
+            position: relative;
         }
 
         .avatar-option.selected {
-            border-color: var(--primary-color);
+            border-color: var(--primary);
             transform: scale(1.05);
         }
 
@@ -317,19 +402,25 @@
             object-fit: cover;
         }
 
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
         /* Main App Layout */
-        .container {
+        .app-container {
             display: flex;
             height: 100vh;
             width: 100%;
-            padding-top: 0;
         }
 
         /* Mobile Header */
         .mobile-header {
             display: none;
-            padding: 0 15px;
-            background-color: var(--primary-color);
+            padding: 0 16px;
+            background-color: var(--primary);
             color: white;
             justify-content: space-between;
             align-items: center;
@@ -339,7 +430,7 @@
             right: 0;
             z-index: 100;
             height: 60px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .back-button {
@@ -348,93 +439,147 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
-            padding: 5px;
+            padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            transition: background-color 0.2s;
+            transition: var(--transition);
         }
 
         .back-button:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
 
+        .mobile-title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .mobile-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .mobile-actions i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-actions i:hover {
+            opacity: 0.8;
+        }
+
+        /* Sidebar */
         .sidebar {
             width: 30%;
-            max-width: 350px;
-            background-color: white;
-            border-right: 1px solid #ddd;
+            max-width: 380px;
+            background-color: var(--surface);
+            border-right: 1px solid #E0E0E0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            transition: transform 0.3s ease-in-out;
+            transition: var(--transition);
             z-index: 10;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         }
 
-        .chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--secondary-color);
-            position: relative;
-            transition: transform 0.3s ease-in-out;
-            z-index: 20;
-        }
-
-        /* Header (Sidebar & Chat Area) */
-        .header, .messages-header {
-            padding: 15px;
-            background-color: white;
-            color: var(--text-color);
+        .sidebar-header {
+            padding: 20px;
+            background-color: var(--surface);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
-            border-bottom: 1px solid #eee;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #F0F0F0;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid var(--primary-light);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .user-status {
+            font-size: 12px;
+            color: var(--on-surface-light);
         }
 
         .header-actions {
             display: flex;
-            gap: 15px;
+            gap: 16px;
         }
 
-        .header-actions i {
-            font-size: 20px;
+        .header-action {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            color: var(--primary-color);
-            transition: color 0.2s;
+            color: var(--on-surface);
+            transition: var(--transition);
+            background-color: #F5F5F5;
         }
 
-        .header-actions i:hover {
-            color: #0056b3;
+        .header-action:hover {
+            background-color: #EEEEEE;
+            color: var(--primary);
         }
 
-        /* Contacts List */
         .contacts-header {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .contacts-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .new-chat-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .new-chat-btn:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
         }
 
         .contacts-list {
@@ -444,57 +589,63 @@
         }
 
         .contact {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 16px 20px;
+            border-bottom: 1px solid #F5F5F5;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: var(--transition);
             position: relative;
         }
 
         .contact:hover {
-            background-color: #f7f7f7;
+            background-color: #FAFAFA;
         }
 
         .contact.active {
-            background-color: #e6f7ff;
-            border-left: 3px solid var(--primary-color);
-            padding-left: 12px;
+            background-color: rgba(126, 87, 194, 0.08);
+            border-left: 4px solid var(--primary);
         }
 
         .contact-avatar {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             position: relative;
             flex-shrink: 0;
         }
 
-        .online-status {
+        .contact-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .online-indicator {
             position: absolute;
             bottom: 2px;
             right: 2px;
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background-color: var(--success-color);
+            background-color: var(--success);
             border: 2px solid white;
         }
 
-        .offline-status {
+        .offline-indicator {
             position: absolute;
             bottom: 2px;
             right: 2px;
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background-color: var(--light-text);
+            background-color: var(--on-surface-light);
             border: 2px solid white;
         }
 
-        .contact-info {
+        .contact-details {
             flex: 1;
             min-width: 0;
         }
@@ -504,47 +655,101 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin-bottom: 4px;
         }
 
         .contact-last-message {
             font-size: 14px;
-            color: var(--light-text);
+            color: var(--on-surface-light);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Messages Area */
-        .messages-header {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background);
+            position: relative;
+            transition: var(--transition);
+            z-index: 20;
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            background-color: var(--surface);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
-            background-color: white;
-            color: var(--text-color);
+            border-bottom: 1px solid #F0F0F0;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .chat-status {
+            font-size: 13px;
+            color: var(--on-surface-light);
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-action {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--on-surface);
+            transition: var(--transition);
+            background-color: #F5F5F5;
+        }
+
+        .chat-action:hover {
+            background-color: #EEEEEE;
+            color: var(--primary);
         }
 
         .messages-container {
             flex: 1;
-            padding: 20px 15px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background-color: var(--secondary-color);
+            gap: 16px;
+            background-color: var(--background);
         }
 
         .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: var(--chat-bubble-radius);
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
             position: relative;
-            user-select: none;
             word-wrap: break-word;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
             animation: messageAppear 0.3s ease-out;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         @keyframes messageAppear {
@@ -560,21 +765,21 @@
 
         .message.sent {
             align-self: flex-end;
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
-            border-bottom-right-radius: 5px;
+            border-bottom-right-radius: 6px;
         }
 
         .message.received {
             align-self: flex-start;
-            background-color: white;
-            border: 1px solid #e9e9e9;
-            color: var(--text-color);
-            border-bottom-left-radius: 5px;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            border-bottom-left-radius: 6px;
+            border: 1px solid #F0F0F0;
         }
 
         .message-content {
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             line-height: 1.4;
         }
 
@@ -582,44 +787,76 @@
             font-size: 11px;
             opacity: 0.8;
             text-align: right;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .system-message {
             align-self: center;
-            background-color: #f0f0f0;
-            color: #666;
+            background-color: #F5F5F5;
+            color: var(--on-surface-light);
             font-style: italic;
             max-width: 80%;
             text-align: center;
             font-size: 14px;
             border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .no-chat-selected {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .no-chat-icon {
+            font-size: 64px;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+        }
+
+        .no-chat-text {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--on-surface);
+        }
+
+        .no-chat-subtext {
+            font-size: 14px;
+            color: var(--on-surface-light);
+            max-width: 300px;
         }
 
         /* Message Input */
         .message-input-container {
-            padding: 10px 15px;
-            border-top: 1px solid #ddd;
+            padding: 16px 20px;
+            border-top: 1px solid #E0E0E0;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: flex-end;
-            background: white;
+            background: var(--surface);
             flex-shrink: 0;
-            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
         }
 
         .message-input-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: #f0f2f5;
+            background: #F5F5F5;
             border-radius: 24px;
-            padding: 5px 15px;
-            transition: background-color 0.2s;
+            padding: 8px 16px;
+            transition: var(--transition);
         }
 
         .message-input-wrapper:focus-within {
-            background: #e4e6e9;
+            background: #EEEEEE;
+            box-shadow: 0 0 0 2px rgba(126, 87, 194, 0.1);
         }
 
         .message-input {
@@ -629,17 +866,17 @@
             background: transparent;
             font-size: 16px;
             resize: none;
-            min-height: 25px;
-            max-height: 100px;
+            min-height: 24px;
+            max-height: 120px;
             font-family: inherit;
             outline: none;
         }
 
         .send-btn {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
             border: none;
             display: flex;
@@ -647,11 +884,12 @@
             align-items: center;
             cursor: pointer;
             flex-shrink: 0;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: var(--transition);
         }
 
         .send-btn:hover {
-            background-color: #0069d9;
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
         }
 
         .send-btn:active {
@@ -659,50 +897,34 @@
         }
 
         /* PIN Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: white;
+        .pin-modal-content {
+            background-color: var(--surface);
             border-radius: var(--border-radius);
-            padding: 25px;
+            padding: 24px;
             width: 90%;
             max-width: 400px;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
             animation: modalAppear 0.3s ease-out;
         }
 
-        @keyframes modalAppear {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-title {
-            margin-bottom: 15px;
+        .pin-title {
+            margin-bottom: 8px;
             text-align: center;
+            font-size: 20px;
+            font-weight: 600;
         }
 
-        .pin-input {
+        .pin-subtitle {
+            text-align: center;
+            color: var(--on-surface-light);
+            margin-bottom: 24px;
+        }
+
+        .pin-input-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 24px 0;
         }
 
         .pin-digit {
@@ -710,30 +932,33 @@
             height: 50px;
             text-align: center;
             font-size: 20px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            transition: border-color 0.3s;
+            border: 2px solid #E0E0E0;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            background-color: #FAFAFA;
         }
 
         .pin-digit:focus {
-            border-color: var(--primary-color);
+            border-color: var(--primary);
             outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
         }
 
         .pin-error {
-            color: var(--error-color);
+            color: var(--error);
             text-align: center;
-            margin-top: 10px;
+            margin-top: 12px;
             display: none;
         }
 
-        /* Responsive Fixes */
+        /* Responsive Design */
         @media (max-width: 768px) {
             .mobile-header {
                 display: flex;
             }
             
-            .container {
+            .app-container {
                 flex-direction: column;
                 padding-top: 60px;
             }
@@ -764,7 +989,7 @@
                 height: 100%;
             }
             
-            .sidebar.inactive {
+            .sidebar.hidden {
                 transform: translateX(-100%);
             }
 
@@ -772,16 +997,16 @@
                 transform: translateX(0);
             }
 
-            .messages-header {
+            .chat-header {
                 padding-left: 60px;
             }
 
             .message {
-                max-width: 90%;
+                max-width: 85%;
             }
             
             .message-input-container {
-                padding-bottom: calc(10px + env(safe-area-inset-bottom));
+                padding-bottom: calc(16px + env(safe-area-inset-bottom));
             }
         }
 
@@ -789,7 +1014,7 @@
             .mobile-header {
                 display: none;
             }
-            .sidebar.inactive {
+            .sidebar.hidden {
                 transform: translateX(0);
             }
             .chat-area.active {
@@ -799,58 +1024,68 @@
     </style>
 </head>
 <body>
+    <!-- Splash Screen -->
     <div id="splash-screen">
         <div class="splash-logo">
             <i class="fas fa-comments"></i>
         </div>
         <div class="splash-text">Kiddo Chat</div>
         <div class="splash-subtext">Connect with friends securely</div>
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
         </div>
     </div>
 
+    <!-- Mobile Header -->
     <div class="mobile-header">
         <button class="back-button" id="mobile-back-button" style="display: none;">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <div id="mobile-title">Kiddo Chat</div>
-        <div class="header-actions">
+        <div class="mobile-title" id="mobile-title">Kiddo Chat</div>
+        <div class="mobile-actions">
             <i class="fas fa-ellipsis-v" id="mobile-menu-button"></i>
         </div>
     </div>
 
+    <!-- Auth Container -->
     <div id="auth-container" class="auth-container" style="display: none;">
         <div class="auth-box">
-            <h2 id="auth-title" class="auth-title">Create Account</h2>
+            <div class="auth-header">
+                <h2 id="auth-title" class="auth-title">Create Account</h2>
+                <p class="auth-subtitle" id="auth-subtitle">Join Kiddo Chat to connect with friends</p>
+            </div>
             <form id="auth-form" class="auth-form">
                 <div id="name-group" class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your name">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" class="form-input" placeholder="Enter your name">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="Enter your email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password">
                 </div>
                 <div id="pin-group" class="form-group">
-                    <label for="pin">PIN Code</label>
-                    <input type="password" id="pin" placeholder="Create a 4-digit PIN" maxlength="4">
+                    <label for="pin" class="form-label">PIN Code</label>
+                    <input type="password" id="pin" class="form-input" placeholder="Create a 4-digit PIN" maxlength="4">
                 </div>
                 <div id="gender-group" class="form-group">
-                    <label>Gender</label>
+                    <label class="form-label">Gender</label>
                     <div class="gender-selection">
                         <div class="gender-option selected" data-gender="male">Boy</div>
                         <div class="gender-option" data-gender="female">Girl</div>
                     </div>
                 </div>
                 <div id="avatar-group" class="form-group">
-                    <label>Avatar</label>
-                    <div class="avatar-preview">
-                        <img id="avatar-preview-img" class="avatar-preview-img" src="https://api.dicebear.com/6.x/avataaars/svg?seed=Ahmed&style=Circle&accessories=Round&head=Full&clothing=ShirtCrewNeck&clothingColor=65c9ff&skinColor=f8d25c&facialHair=BeardLight&top=ShortHairShortFlat" alt="Avatar Preview">
+                    <div class="avatar-section">
+                        <div class="avatar-preview" id="avatar-preview">
+                            <img id="avatar-preview-img" class="avatar-preview-img" src="https://api.dicebear.com/6.x/avataaars/svg?seed=Ahmed&style=Circle&accessories=Round&head=Full&clothing=ShirtCrewNeck&clothingColor=65c9ff&skinColor=f8d25c&facialHair=BeardLight&top=ShortHairShortFlat" alt="Avatar Preview">
+                        </div>
+                        <div class="avatar-change-text" id="avatar-change-text">Change Avatar</div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" id="auth-button">
@@ -859,64 +1094,91 @@
                 </button>
             </form>
             <div class="auth-switch">
-                <span id="auth-switch-text">Already have an account? </span>
-                <a href="#" id="auth-switch-link">Login</a>
+                <span class="auth-switch-text" id="auth-switch-text">Already have an account?</span>
+                <a href="#" class="auth-switch-link" id="auth-switch-link">Login</a>
             </div>
         </div>
     </div>
 
-    <div id="avatar-modal" class="avatar-modal">
-        <div class="avatar-modal-content">
-            <h3 class="modal-title">Select Your Avatar</h3>
+    <!-- Avatar Selection Modal -->
+    <div id="avatar-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Choose Your Avatar</h3>
+            </div>
             <div class="avatar-grid" id="avatar-grid">
                 <!-- Avatars will be loaded here -->
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <div class="modal-actions">
                 <button class="btn btn-secondary" id="close-avatar-modal">
                     <i class="fas fa-times"></i>
                     Cancel
                 </button>
                 <button class="btn btn-primary" id="confirm-avatar">
                     <i class="fas fa-check"></i>
-                    Select
+                    Select Avatar
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="app-container" class="container" style="display: none;">
-        <div class="sidebar">
-            <div class="header">
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
                 <div class="user-info">
                     <img id="user-avatar" class="user-avatar" src="" alt="User Avatar">
-                    <span id="user-name">User Name</span>
+                    <div class="user-details">
+                        <div class="user-name" id="user-name">User Name</div>
+                        <div class="user-status" id="user-status">Online</div>
+                    </div>
                 </div>
                 <div class="header-actions">
-                    <i class="fas fa-ellipsis-v" id="menu-button"></i>
+                    <div class="header-action" id="menu-button">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
                 </div>
             </div>
             <div class="contacts-header">
-                <h3>Chats</h3>
-                <i class="fas fa-user-plus" id="new-chat-button"></i>
+                <div class="contacts-title">Chats</div>
+                <div class="new-chat-btn" id="new-chat-button">
+                    <i class="fas fa-user-plus"></i>
+                </div>
             </div>
             <div class="contacts-list" id="contacts-list">
                 <!-- Contacts will be loaded here -->
             </div>
         </div>
 
-        <div class="chat-area">
-            <div class="messages-header">
-                <img id="chat-avatar" class="user-avatar" src="" alt="Contact Avatar">
-                <div>
-                    <div id="chat-name">Select a chat</div>
-                    <div id="chat-status" style="font-size: 12px; color: #777;">Online</div>
+        <!-- Chat Area -->
+        <div class="chat-area" id="chat-area">
+            <div class="chat-header">
+                <img id="chat-avatar" class="chat-avatar" src="" alt="Contact Avatar">
+                <div class="chat-info">
+                    <div class="chat-name" id="chat-name">Select a chat</div>
+                    <div class="chat-status" id="chat-status">Online</div>
                 </div>
-                <div class="header-actions">
-                    <i class="fas fa-ellipsis-v"></i>
+                <div class="chat-actions">
+                    <div class="chat-action">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="chat-action">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="chat-action">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
                 </div>
             </div>
             <div class="messages-container" id="messages-container">
-                <!-- Messages will be loaded here -->
+                <div class="no-chat-selected">
+                    <div class="no-chat-icon">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <div class="no-chat-text">No Chat Selected</div>
+                    <div class="no-chat-subtext">Select a contact from the sidebar to start chatting</div>
+                </div>
             </div>
             <div class="message-input-container">
                 <div class="message-input-wrapper">
@@ -929,18 +1191,19 @@
         </div>
     </div>
 
+    <!-- PIN Modal -->
     <div id="pin-modal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Enter Friend's PIN</h3>
-            <p>Enter your friend's 4-digit PIN to start chatting</p>
-            <div class="pin-input">
+        <div class="pin-modal-content">
+            <h3 class="pin-title">Enter Friend's PIN</h3>
+            <p class="pin-subtitle">Enter your friend's 4-digit PIN to start chatting</p>
+            <div class="pin-input-container">
                 <input type="password" class="pin-digit" maxlength="1" data-index="0">
                 <input type="password" class="pin-digit" maxlength="1" data-index="1">
                 <input type="password" class="pin-digit" maxlength="1" data-index="2">
                 <input type="password" class="pin-digit" maxlength="1" data-index="3">
             </div>
             <div class="pin-error" id="pin-error">Incorrect PIN. Please try again.</div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <div class="modal-actions">
                 <button class="btn btn-secondary" id="cancel-pin">
                     <i class="fas fa-times"></i>
                     Cancel
@@ -978,6 +1241,7 @@
         const appContainer = document.getElementById('app-container');
         const authForm = document.getElementById('auth-form');
         const authTitle = document.getElementById('auth-title');
+        const authSubtitle = document.getElementById('auth-subtitle');
         const authButton = document.getElementById('auth-button');
         const authSwitchText = document.getElementById('auth-switch-text');
         const authSwitchLink = document.getElementById('auth-switch-link');
@@ -986,6 +1250,7 @@
         const genderGroup = document.getElementById('gender-group');
         const avatarGroup = document.getElementById('avatar-group');
         const avatarPreviewImg = document.getElementById('avatar-preview-img');
+        const avatarChangeText = document.getElementById('avatar-change-text');
         const avatarModal = document.getElementById('avatar-modal');
         const avatarGrid = document.getElementById('avatar-grid');
         const closeAvatarModal = document.getElementById('close-avatar-modal');
@@ -993,14 +1258,15 @@
         const mobileBackButton = document.getElementById('mobile-back-button');
         const mobileTitle = document.getElementById('mobile-title');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const sidebar = document.querySelector('.sidebar');
-        const chatArea = document.querySelector('.chat-area');
+        const sidebar = document.getElementById('sidebar');
+        const chatArea = document.getElementById('chat-area');
         const contactsList = document.getElementById('contacts-list');
         const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
         const userAvatar = document.getElementById('user-avatar');
         const userName = document.getElementById('user-name');
+        const userStatus = document.getElementById('user-status');
         const chatAvatar = document.getElementById('chat-avatar');
         const chatName = document.getElementById('chat-name');
         const chatStatus = document.getElementById('chat-status');
@@ -1058,6 +1324,7 @@
             authSwitchLink.addEventListener('click', toggleAuthMode);
             
             // Avatar selection
+            avatarChangeText.addEventListener('click', () => avatarModal.style.display = 'flex');
             avatarPreviewImg.addEventListener('click', () => avatarModal.style.display = 'flex');
             closeAvatarModal.addEventListener('click', () => avatarModal.style.display = 'none');
             confirmAvatar.addEventListener('click', confirmAvatarSelection);
@@ -1163,9 +1430,10 @@
             isLoginMode = !isLoginMode;
             
             if (isLoginMode) {
-                authTitle.textContent = 'Login';
+                authTitle.textContent = 'Welcome Back';
+                authSubtitle.textContent = 'Sign in to your Kiddo Chat account';
                 authButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-                authSwitchText.textContent = "Don't have an account? ";
+                authSwitchText.textContent = "Don't have an account?";
                 authSwitchLink.textContent = 'Sign Up';
                 nameGroup.style.display = 'none';
                 pinGroup.style.display = 'none';
@@ -1173,8 +1441,9 @@
                 avatarGroup.style.display = 'none';
             } else {
                 authTitle.textContent = 'Create Account';
+                authSubtitle.textContent = 'Join Kiddo Chat to connect with friends';
                 authButton.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up';
-                authSwitchText.textContent = 'Already have an account? ';
+                authSwitchText.textContent = 'Already have an account?';
                 authSwitchLink.textContent = 'Login';
                 nameGroup.style.display = 'block';
                 pinGroup.style.display = 'block';
@@ -1189,8 +1458,8 @@
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const name = document.getElementById('name').value;
-            const pin = document.getElementById('pin').value;
+            const name = document.getElementById('name') ? document.getElementById('name').value : '';
+            const pin = document.getElementById('pin') ? document.getElementById('pin').value : '';
             
             if (isLoginMode) {
                 // Login
@@ -1224,7 +1493,9 @@
                                         email: email,
                                         pin: pin,
                                         avatar: selectedAvatar,
-                                        gender: selectedGender
+                                        gender: selectedGender,
+                                        isOnline: true,
+                                        lastSeen: Date.now()
                                     });
                                 })
                                 .then(() => {
@@ -1280,10 +1551,10 @@
             
             contact.innerHTML = `
                 <div class="contact-avatar">
-                    <img src="${user.avatar}" alt="${user.name}" class="user-avatar">
-                    <div class="online-status"></div>
+                    <img src="${user.avatar}" alt="${user.name}">
+                    <div class="${user.isOnline ? 'online-indicator' : 'offline-indicator'}"></div>
                 </div>
-                <div class="contact-info">
+                <div class="contact-details">
                     <div class="contact-name">${user.name}</div>
                     <div class="contact-last-message">Tap to start chatting</div>
                 </div>
@@ -1309,7 +1580,7 @@
             
             chatName.textContent = user.name;
             chatAvatar.src = user.avatar;
-            chatStatus.textContent = 'Online';
+            chatStatus.textContent = user.isOnline ? 'Online' : 'Offline';
             
             // Load messages
             loadMessages(userId);
@@ -1321,6 +1592,12 @@
         // Load messages for a contact
         function loadMessages(contactId) {
             messagesContainer.innerHTML = '';
+            
+            // Remove no chat message
+            const noChatMessage = messagesContainer.querySelector('.no-chat-selected');
+            if (noChatMessage) {
+                noChatMessage.remove();
+            }
             
             // Listen for messages with this contact
             const chatId = [currentUser.uid, contactId].sort().join('_');
@@ -1446,7 +1723,7 @@
 
         // Show user profile (simplified)
         function showUserProfile() {
-            alert(`Your Profile:\nName: ${userName.textContent}\nPIN: ${currentUser ? '****' : 'Not available'}`);
+            alert(`Your Profile:\nName: ${userName.textContent}\nStatus: ${userStatus.textContent}`);
         }
 
         // Handle mobile back button
@@ -1458,14 +1735,14 @@
 
         // Show chat area on mobile
         function showChatArea() {
-            sidebar.classList.add('inactive');
+            sidebar.classList.add('hidden');
             chatArea.classList.add('active');
             mobileBackButton.style.display = 'flex';
         }
 
         // Show contacts list on mobile
         function showContactsList() {
-            sidebar.classList.remove('inactive');
+            sidebar.classList.remove('hidden');
             chatArea.classList.remove('active');
             mobileBackButton.style.display = 'none';
             mobileTitle.textContent = 'Kiddo Chat';
@@ -1480,7 +1757,7 @@
         // Adjust textarea height based on content
         function adjustTextareaHeight() {
             messageInput.style.height = 'auto';
-            messageInput.style.height = Math.min(messageInput.scrollHeight, 100) + 'px';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
         }
 
         // Initialize the app when DOM is loaded
